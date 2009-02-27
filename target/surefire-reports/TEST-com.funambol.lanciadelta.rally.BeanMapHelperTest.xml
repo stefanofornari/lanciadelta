@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" skipped="0" tests="3" time="0.058" failures="0" name="com.funambol.lanciadelta.rally.BeanMapHelperTest">
+  <properties>
+    <property value="Apple Computer, Inc." name="java.vendor"/>
+    <property value="/Users/ste/.m2" name="localRepository"/>
+    <property value="SUN_STANDARD" name="sun.java.launcher"/>
+    <property value="HotSpot Client Compiler" name="sun.management.compiler"/>
+    <property value="f87cd0" name="env.SECURITYSESSIONID"/>
+    <property value="Mac OS X" name="os.name"/>
+    <property value="NetBeans" name="env.APP_NAME_400"/>
+    <property value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/ui.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/laf.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/sunrsasign.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/jsse.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/jce.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/charsets.jar" name="sun.boot.class.path"/>
+    <property value="/Users/ste/Projects/LanciaDelta" name="env.PWD"/>
+    <property value="/Applications/NetBeans/NetBeans 6.5.app/Contents/MacOS/../Resources/NetBeans/bin/../nb6.5/netbeans.icns" name="env.APP_ICON_400"/>
+    <property value="Sun Microsystems Inc." name="java.vm.specification.vendor"/>
+    <property value="1.5.0_16-b06-275" name="java.runtime.version"/>
+    <property value="ste" name="user.name"/>
+    <property value="ste" name="env.USER"/>
+    <property value="/bin/bash" name="env.SHELL"/>
+    <property value="0x1F5:0:0" name="env.__CF_USER_TEXT_ENCODING"/>
+    <property value="true" name="awt.nativeDoubleBuffering"/>
+    <property value="/usr/bin:/bin:/usr/sbin:/sbin" name="env.PATH"/>
+    <property value="en" name="user.language"/>
+    <property value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Libraries" name="sun.boot.library.path"/>
+    <property value="/opt/apache-maven-2.0.9/bin/m2.conf" name="classworlds.conf"/>
+    <property value="1.5.0_16" name="java.version"/>
+    <property value="Europe/Rome" name="user.timezone"/>
+    <property value="32" name="sun.arch.data.model"/>
+    <property value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Home/lib/endorsed" name="java.endorsed.dirs"/>
+    <property value="" name="sun.cpu.isalist"/>
+    <property value="MacRoman" name="sun.jnu.encoding"/>
+    <property value="sun.io" name="file.encoding.pkg"/>
+    <property value="1" name="env.SHLVL"/>
+    <property value="/" name="file.separator"/>
+    <property value="Java Platform API Specification" name="java.specification.name"/>
+    <property value="49.0" name="java.class.version"/>
+    <property value="US" name="user.country"/>
+    <property value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Home" name="java.home"/>
+    <property value="mixed mode, sharing" name="java.vm.info"/>
+    <property value="10.4.11" name="os.version"/>
+    <property value=":" name="path.separator"/>
+    <property value="1.5.0_16-132" name="java.vm.version"/>
+    <property value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home" name="env.JAVA_HOME"/>
+    <property value="apple.awt.CPrinterJob" name="java.awt.printerjob"/>
+    <property value="UnicodeLittle" name="sun.io.unicode.encoding"/>
+    <property value="apple.awt.CToolkit" name="awt.toolkit"/>
+    <property value="/Users/ste" name="user.home"/>
+    <property value="/Users/ste/Projects/LanciaDelta" name="env.OLDPWD"/>
+    <property value="schepis@funambol.com" name="rally.user"/>
+    <property value="Sun Microsystems Inc." name="java.specification.vendor"/>
+    <property value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" name="java.library.path"/>
+    <property value="http://apple.com/" name="java.vendor.url"/>
+    <property value="&quot;Apple Computer, Inc.&quot;" name="java.vm.vendor"/>
+    <property value="false" name="gopherProxySet"/>
+    <property value="/opt/apache-maven-2.0.9" name="maven.home"/>
+    <property value="Java(TM) 2 Runtime Environment, Standard Edition" name="java.runtime.name"/>
+    <property value="/opt/apache-maven-2.0.9/boot/classworlds-1.1.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/.compatibility/14compatibility.jar" name="java.class.path"/>
+    <property value="Java Virtual Machine Specification" name="java.vm.specification.name"/>
+    <property value="1.0" name="java.vm.specification.version"/>
+    <property value="little" name="sun.cpu.endian"/>
+    <property value="unknown" name="sun.os.patch.level"/>
+    <property value="/Users/ste" name="env.HOME"/>
+    <property value="/Users/ste/Projects/LanciaDelta/target/test-classes:/Users/ste/Projects/LanciaDelta/target/classes:/Users/ste/.m2/junit/junit/3.8.1/junit-3.8.1.jar:/Users/ste/.m2/axis/axis/1.4/axis-1.4.jar:/Users/ste/.m2/org/apache/axis/axis-jaxrpc/1.4/axis-jaxrpc-1.4.jar:/Users/ste/.m2/org/apache/axis/axis-saaj/1.4/axis-saaj-1.4.jar:/Users/ste/.m2/axis/axis-wsdl4j/1.5.1/axis-wsdl4j-1.5.1.jar:/Users/ste/.m2/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/Users/ste/.m2/commons-discovery/commons-discovery/0.4/commons-discovery-0.4.jar:/Users/ste/.m2/javax/activation/activation/1.1/activation-1.1.jar:/Users/ste/.m2/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar:/Users/ste/.m2/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:/Users/ste/.m2/commons-lang/commons-lang/2.4/commons-lang-2.4.jar:/Users/ste/.m2/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar:/Users/ste/.m2/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/Users/ste/.m2/funambol/core-framework/7.1.0-SNAPSHOT/core-framework-7.1.0-SNAPSHOT.jar:/Users/ste/.m2/funambol/ext/6.5.3/ext-6.5.3.jar:/Users/ste/.m2/org/jibx/jibx-run/1.1.2fun/jibx-run-1.1.2fun.jar:/Users/ste/.m2/xpp3/xpp3/1.1.2a-fun/xpp3-1.1.2a-fun.jar:" name="surefire.test.class.path"/>
+    <property value="/tmp" name="java.io.tmpdir"/>
+    <property value="http://developer.apple.com/java/" name="java.vendor.url.bug"/>
+    <property value="/Library/Google/Frameworks/Gild.framework" name="env._GOOGLE_GILD_RUNTIME_FRAMEWORK_ABSOLUTE_PATH_"/>
+    <property value="org.netbeans.Main" name="env.JAVA_MAIN_CLASS_400"/>
+    <property value="org.codehaus.classworlds.Launcher" name="env.JAVA_MAIN_CLASS_463"/>
+    <property value="i386" name="os.arch"/>
+    <property value="apple.awt.CGraphicsEnvironment" name="java.awt.graphicsenv"/>
+    <property value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Home/lib/ext" name="java.ext.dirs"/>
+    <property value="funambol123" name="rally.password"/>
+    <property value="1040.1.5.0_16-275" name="mrj.version"/>
+    <property value="/Users/ste/Projects/LanciaDelta" name="user.dir"/>
+    <property value="shared" name="env.J2D_PIXMAPS"/>
+    <property value="
+" name="line.separator"/>
+    <property value="Java HotSpot(TM) Client VM" name="java.vm.name"/>
+    <property value="/Users/ste/Projects/LanciaDelta" name="basedir"/>
+    <property value="MacRoman" name="file.encoding"/>
+    <property value="1.5" name="java.specification.version"/>
+  </properties>
+  <testcase classname="com.funambol.lanciadelta.rally.BeanMapHelperTest" time="0.034" name="testConvertObject"/>
+  <testcase classname="com.funambol.lanciadelta.rally.BeanMapHelperTest" time="0.002" name="testConvertIteration"/>
+  <testcase classname="com.funambol.lanciadelta.rally.BeanMapHelperTest" time="0.015" name="testConvertStory"/>
+</testsuite>

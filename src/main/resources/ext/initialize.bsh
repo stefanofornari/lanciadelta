@@ -1,0 +1,5 @@
+initialize() {
+    print("LanciaDelta shell ${project.version}\n");
+}
+
+show();

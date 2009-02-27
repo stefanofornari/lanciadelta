@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Iteration ${name}
+-------------------------------------------------------------------------------
+
+Start date: ${startDate}           End date: ${endDate}
+State: ${state}
+
+Theme
+-----
+${theme}
+
+Notes
+-----
+${notes}
+
+Project
+-------
+${project.name}
+
+-------------------------------------------------------------------------------
+Created on ${creationDate}, oid: ${objectID}
+url: https://rally1.rallydev.com/slm/detail/it/${objectID}

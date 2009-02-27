@@ -1,0 +1,17 @@
+/**
+	Get a resource from the BeanShell classpath.
+	This method takes into account modification to the BeanShell class path via
+	addClassPath() and setClassPath();
+*/
+
+bsh.help.getResource = "usage: getResourceAsString( String name )";
+
+import bsh.Interpreter;
+import com.funambol.framework.tools.IOTools;
+
+String getResourceAsString( String path )
+{
+	return IOTools.readFileString(
+	    this.interpreter.getClassManager().getResourceAsStream( path )
+	);
+}

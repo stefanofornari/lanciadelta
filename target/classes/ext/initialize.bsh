@@ -1,0 +1,5 @@
+initialize() {
+    print("LanciaDelta shell 1.0-SNAPSHOT\n");
+}
+
+show();

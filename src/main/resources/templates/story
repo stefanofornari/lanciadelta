@@ -1,0 +1,32 @@
+--------------------------------------------------------------------------------
+Story ${formattedID} - ${name}
+--------------------------------------------------------------------------------
+Owner: ${owner}
+Project: ${project.name}
+--------------------------------------------------------------------------------
+
+Description
+-----------
+${description}
+
+Notes
+-----
+${notes}
+
+Parent
+------
+${parent.formattedID} - ${parent.name}
+url: https://rally1.rallydev.com/slm/detail/ar/${parent.objectID}
+
+--------------------------------------------------------------------------------
+
+State:         ${scheduleState}
+Blocked:       ${blocked}
+Release:       ${release.name}
+Iteration:     ${iteration.name}
+Estimate:      ${planEstimate}
+Accepted date: ${acceptedDate}
+
+--------------------------------------------------------------------------------
+Created on ${creationDate}, last updated on ${lastUpdateDate}
+url: https://rally1.rallydev.com/slm/detail/ar/${objectID}
