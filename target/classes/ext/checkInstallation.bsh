@@ -1,3 +1,0 @@
-checkInstallation() {
-    print("ok");
-}

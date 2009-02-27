@@ -1,7 +1,0 @@
-import com.funambol.framework.tools.StringTools;
-
-import com.funambol.lanciadelta.rally.BeanMapHelper;
-
-String replace(s, o) {
-    return StringTools.replace(s, "", BeanMapHelper.getMap(o));
-}
