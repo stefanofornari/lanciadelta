@@ -1,0 +1,33 @@
+/**
+ * Export the stories of the given iteration. The list of stories is returned
+ * as a string representing a CSV. Commas inside fields are doubled so that ,,
+ * means ,.
+ */
+
+bsh.help.getResource = "usage: exportIteration( String name )";
+
+String exportIteration(String name) {
+    iterations = rally.getIterations(workspace, name);
+
+    //
+    // Let's consider we have only one iteration in this workspace with the
+    // given name
+    //
+    if (iterations.size() == 0) {
+        return "";
+    }
+
+    list = new StringBuffer();
+    for (story: iterations.get(0).stories) {
+        story = rally.read(story);
+        list.append(story.formattedID).append(',')
+            .append(story.name).append(',')
+            .append(StringUtils.abbreviate(story.description, 15)).append(',')
+            .append(story.state).append(',')
+            .append(story.planEstimate).append(',')
+            .append("\n");
+
+    }
+
+    return list.toString();
+}
