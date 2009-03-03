@@ -1,0 +1,15 @@
+try {
+  exportIteration("NOITERATION");
+} catch (Exception e) {
+  //
+  // This is the expected behaviour
+  //
+}
+
+stories = exportIteration("MAR0901");
+assert(stories.indexOf(TEST1));
+assert(stories.indexOf(TEST2));
+assert(stories.indexOf(TEST3));
+
+stories = exportIteration("MAY0901");
+assert(stories.length() == 0);
