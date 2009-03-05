@@ -6,10 +6,15 @@ try {
   //
 }
 
-stories = exportIteration("MAR0901");
-assert(stories.indexOf(TEST1));
-assert(stories.indexOf(TEST2));
-assert(stories.indexOf(TEST3));
+TEST1="\"US9\",\"multiple subscriptions access\",\"As a user, I want to be able to ...\",\"Defined\",\"1.0\"";
+TEST2="\"US8\",\"user stories expoert - XML\",\"As a user, I want to export the ...\",\"Defined\",\"3.0\"";
+TEST3="\"US7\",\"stories export - \"\"CSV\"\"\",\"As a user, I want to export the ...\",\"Accepted\",\"5.0\"";
 
-stories = exportIteration("MAY0901");
+stories = exportIteration("TESTIT01");
+print(stories);
+assert(stories.indexOf(TEST1)>=0);
+assert(stories.indexOf(TEST2)>=0);
+assert(stories.indexOf(TEST3)>=0);
+
+stories = exportIteration("TESTIT02");
 assert(stories.length() == 0);
