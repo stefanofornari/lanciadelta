@@ -95,7 +95,10 @@ implements Constants {
             try {
                 shell.getInterpreter().eval(new InputStreamReader(System.in));
             } catch (Exception e) {
+                System.err.println("ERR: " + e.getMessage());
+                System.err.println(">>>");
                 e.printStackTrace();
+                System.err.println("<<<");
             }
         }
         
