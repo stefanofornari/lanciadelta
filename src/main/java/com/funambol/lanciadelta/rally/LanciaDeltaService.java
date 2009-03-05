@@ -30,6 +30,7 @@ package com.funambol.lanciadelta.rally;
 
 import com.funambol.lanciadelta.Constants;
 import com.funambol.lanciadelta.LanciaDeltaBeanMap;
+import com.rallydev.webservice.v1_10.domain.Artifact;
 import com.rallydev.webservice.v1_10.domain.DomainObject;
 import com.rallydev.webservice.v1_10.domain.HierarchicalRequirement;
 import com.rallydev.webservice.v1_10.domain.Iteration;
@@ -79,28 +80,86 @@ implements RallyService, Constants {
      * @throws Exception in case of errors
      */
     public List<Iteration> getIterations(Workspace workspace, String name) 
-    throws Exception{
+    throws RallyException{
         final int PAGE = 50;
         ArrayList<Iteration> iterations = new ArrayList();
-        
+
+        QueryResult rs = null;
         boolean cont = true;
         long i = 1, tot = 0;
         do {
-            QueryResult rs = query(workspace, ITERATION, "(Name = " + name + ")", "", false, i, PAGE);
-            DomainObject[] results = rs.getResults();
-            tot = rs.getTotalResultCount();
+            try {
+                rs = query(workspace, ITERATION, "(Name = " + name + ")", "", false, i, PAGE);
+            
+                DomainObject[] results = rs.getResults();
+                tot = rs.getTotalResultCount();
 
-            for (DomainObject r: results) {
-                Iteration iteration = new Iteration();
-                iteration.setRef(r.getRef());
-                iteration = (Iteration)read(iteration);
-                iterations.add(iteration);
-                ++i;
+                for (DomainObject r: results) {
+                    Iteration iteration = new Iteration();
+                    iteration.setRef(r.getRef());
+                    iteration = (Iteration)read(iteration);
+                    iterations.add(iteration);
+                    ++i;
+                }
+            } catch (Exception e) {
+                throw new RallyException("Error getting the iterations with name" + name, e);
             }
         } while (i<=tot);
 
         return iterations;
 
+    }
+
+    /**
+     * Returns the user stories scheduled in the given iteration.
+     * <br><b>
+     * NOTE: we assume that there are not iterations with the same name in a
+     * workspace.
+     * </b>
+     *
+     * @param name of the iteration reference id
+     * @param w Rally workspace
+     *
+     * @return the user stories scheduled in the given iteration
+     *
+     * @throws RallyException in case of errors
+     */
+    public List<Artifact> getIterationStories(Workspace w, String name)
+    throws RallyException{
+        final int PAGE = 10;
+
+        List<Iteration> iterations = getIterations(w, name);
+
+        if (iterations.size() == 0) {
+            throw new RallyException("Iteration '" + name + "' not found");
+        }
+
+        final String QUERY = "(Iteration = " 
+                           + iterations.get(0).getRef()
+                           + ")"
+                           ;
+
+        List<Artifact> ret = new ArrayList<Artifact>();
+
+        long i = 1, tot = 0;
+        QueryResult rs = null;
+        do {
+            try {
+                rs = query(w, HIERARCHICAL_REQUIREMENT, QUERY, "", true, i, PAGE);
+            
+                DomainObject[] results = rs.getResults();
+                tot = rs.getTotalResultCount();
+
+                for (DomainObject o: results) {
+                    ret.add((Artifact)o);
+                    ++i;
+                }
+            } catch (Exception e) {
+                throw new RallyException("Error reading itertion stories for " + iterations.get(0).getRef(), e);
+            }
+        } while (i<=tot);
+
+        return ret;
     }
 
     /**
