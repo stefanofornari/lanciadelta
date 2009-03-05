@@ -37,6 +37,10 @@ public class RallyException extends Exception {
         super(msg);
     }
 
+    public RallyException(String msg, Throwable t) {
+        super(msg, t);
+    }
+
     public RallyException(Throwable t) {
         super(t.getMessage(), t);
     }
