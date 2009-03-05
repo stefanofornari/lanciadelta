@@ -17,7 +17,8 @@ public interface Constants {
     public final String PROPERTY_PASSWORD  = "rally.password";
     public final String PROPERTY_URL       = "rally.url"     ;
 
-    public final String RALLY_URL = "https://rally1.rallydev.com:443/slm/webservice/1.10";
+    //public final String RALLY_URL = "https://rally1.rallydev.com:443/slm/webservice/1.10";
+    public final String RALLY_URL = "https://community.rallydev.com:443/slm/webservice/1.10";
     public final String RALLY_SERVICE_URL = RALLY_URL + "/RallyService";
     public final String WORKSPACE = "workspace";
     public final String HIERARCHICAL_REQUIREMENT = "hierarchicalrequirement";
