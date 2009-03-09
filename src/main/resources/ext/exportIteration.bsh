@@ -11,6 +11,31 @@ bsh.help.getResource = "usage: exportIteration( String name, String type, int de
 
 import org.apache.commons.lang.StringUtils;
 
+void formatStoryIntoWiki1(story, line) {
+    line.append("||").append(story.formattedID)
+        .append("||").append(story.name);
+
+    //
+    // NOTE: lists are all turned into unnumbered lists
+    //
+    String description = story.description.replaceAll("\r\n", " [[BR]] ");
+
+    description = description.replaceAll("\\|\\|", "<doublepipe>")
+                             .replaceAll("<br>", " [[BR]] ")
+                             .replaceAll("<br></br>", " [[BR]] ")
+                             .replaceAll("<br />", " [[BR]] ")
+                             .replaceAll("<br/>", " [[BR]] ")
+                             .replaceAll("<ul>", "")
+                             .replaceAll("</ul>", "")
+                             .replaceAll("<li>", "* ")
+                             .replaceAll("</li>", "");
+
+    line.append("||").append(description)
+        .append("||").append(story.scheduleState)
+        .append("||").append("" + story.planEstimate).append("||")
+        .append('\n');
+}
+
 String exportIteration(String name, String type, int descriptionLength) {
     stories = rally.getIterationStories(workspace, name);
 
@@ -18,11 +43,7 @@ String exportIteration(String name, String type, int descriptionLength) {
 
     for (story: stories) {
         if (type == "wiki1") {
-            list.append("||").append(story.formattedID)
-                .append("||").append(story.name)
-                .append("||").append(StringUtils.abbreviate(story.description, descriptionLength))
-                .append("||").append(story.scheduleState)
-                .append("||").append("" + story.planEstimate).append("\n");
+            formatStoryIntoWiki1(story, list);
         } else {
             list.append('"').append(story.formattedID).append('"').append(',')
                 .append('"').append(story.name.replaceAll("\"","\"\"")).append('"').append(',')
