@@ -1,26 +1,36 @@
 /**
  * Export the stories of the given iteration. The list of stories is returned
- * as a string representing a CSV. Commas inside fields are doubled so that ,,
- * means ,.
+ * as a string based on the given type. Type can be one of the following:
+ *
+ * csv: comma separated values; fields are surrounded by double quotes and
+ *       double quotes are escapated by a couple of double quotes (" -> "")
+ * wiki1: ||field1||field2||field3...
  */
 
-bsh.help.getResource = "usage: exportIteration( String name )";
+bsh.help.getResource = "usage: exportIteration( String name, String type, int descriptionLength)";
 
 import org.apache.commons.lang.StringUtils;
 
-String exportIteration(String name) {
+String exportIteration(String name, String type, int descriptionLength) {
     stories = rally.getIterationStories(workspace, name);
 
     list = new StringBuffer();
 
     for (story: stories) {
-        list.append('"').append(story.formattedID).append('"').append(',')
-            .append('"').append(story.name.replaceAll("\"","\"\"")).append('"').append(',')
-            .append('"').append(StringUtils.abbreviate(story.description, 35).replaceAll("\"", "\"\"")).append('"').append(',')
-            .append('"').append(story.scheduleState).append('"').append(',')
-            .append('"').append("" + story.planEstimate).append('"')
-            .append("\n");
-
+        if (type == "wiki1") {
+            list.append("||").append(story.formattedID)
+                .append("||").append(story.name)
+                .append("||").append(StringUtils.abbreviate(story.description, descriptionLength))
+                .append("||").append(story.scheduleState)
+                .append("||").append("" + story.planEstimate).append("\n");
+        } else {
+            list.append('"').append(story.formattedID).append('"').append(',')
+                .append('"').append(story.name.replaceAll("\"","\"\"")).append('"').append(',')
+                .append('"').append(StringUtils.abbreviate(story.description, 35).replaceAll("\"", "\"\"")).append('"').append(',')
+                .append('"').append(story.scheduleState).append('"').append(',')
+                .append('"').append("" + story.planEstimate).append('"')
+                .append("\n");
+        }
     }
 
     return list.toString();
