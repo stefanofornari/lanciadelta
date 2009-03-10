@@ -27,11 +27,7 @@
  */
 package com.funambol.lanciadelta.rally;
 
-import com.rallydev.webservice.v1_10.domain.Iteration;
-import com.rallydev.webservice.v1_10.domain.WSObject;
-import com.rallydev.webservice.v1_10.domain.Workspace;
-import java.util.List;
-import java.util.Map;
+import com.funambol.lanciadelta.Constants;
 import junit.framework.TestCase;
 
 /**
@@ -42,6 +38,11 @@ public class LanciaDeltaServiceTest extends TestCase {
     
     public LanciaDeltaServiceTest(String testName) {
         super(testName);
+    }
+
+    @Override
+    public void setUp() {
+        System.setProperty(Constants.PROPERTY_HOST, Constants.RALLY_HOST_COMMUNITY);
     }
 
     public void testSingleton() throws Exception {

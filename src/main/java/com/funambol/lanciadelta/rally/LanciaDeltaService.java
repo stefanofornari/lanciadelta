@@ -229,7 +229,15 @@ implements RallyService, Constants {
      */
     private static LanciaDeltaService initializeRallyService() throws RallyException {
         try {
-            URL url = new URL(LanciaDeltaService.RALLY_SERVICE_URL);
+            URL url = new URL(
+                          "https://"
+                    +     System.getProperty(PROPERTY_HOST) 
+                    +     RALLY_URL
+                    +     LanciaDeltaService.RALLY_SERVICE_URL
+            );
+
+             System.out.println("url: " + url);
+
             RallyService service = (new LanciaDeltaServiceLocator()).getRallyService(url);
 
             // set authentication information on the service

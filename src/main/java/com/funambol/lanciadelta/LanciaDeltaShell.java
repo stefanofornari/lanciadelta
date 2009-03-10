@@ -57,11 +57,18 @@ implements Constants {
 
     public LanciaDeltaShell() throws Exception {
         checkProperties();
+
+        String rallyUrl = "https://"
+                        + System.getProperty(PROPERTY_HOST)
+                        + RALLY_URL
+                        ;
+
+        System.out.println(rallyUrl + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
         
         service = LanciaDeltaService.getInstance();
 
         workspace = new Workspace();
-        workspace.setRef(RALLY_URL + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
+        workspace.setRef(rallyUrl + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
         service.read(workspace);
 
         interpreter = new Interpreter();
@@ -123,9 +130,9 @@ implements Constants {
             throw new RuntimeException(getMissingPropertyMessage(PROPERTY_PASSWORD));
         }
 
-        value = System.getProperty(PROPERTY_URL);
+        value = System.getProperty(PROPERTY_HOST);
         if (StringUtils.isEmpty(value)) {
-            System.setProperty(PROPERTY_URL, RALLY_URL);
+            System.setProperty(PROPERTY_HOST, RALLY_HOST_COMMUNITY);
         }
     }
 

@@ -50,7 +50,6 @@ implements Constants {
     }
 
     public void _testRequiredProperties() throws Exception {
-        final String FAKE_URL = "http://fakeurl.rally.com";
         try {
             new LanciaDeltaShell();
             fail();
@@ -77,11 +76,11 @@ implements Constants {
         System.setProperty(PROPERTY_PASSWORD, "password");
 
         new LanciaDeltaShell();
-        assertEquals(System.getProperty(PROPERTY_URL), RALLY_URL);
+        assertEquals(System.getProperty(PROPERTY_HOST), RALLY_HOST_COMMUNITY);
 
-        System.setProperty(PROPERTY_URL, FAKE_URL);
+        System.setProperty(PROPERTY_HOST, RALLY_HOST_ENTERPRISE);
         new LanciaDeltaShell();
-        assertEquals(System.getProperty(PROPERTY_URL), FAKE_URL);
+        assertEquals(System.getProperty(PROPERTY_HOST), RALLY_HOST_ENTERPRISE);
     }
 
     public void _testParserInitialization() throws Exception {
