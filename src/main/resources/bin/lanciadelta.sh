@@ -1,10 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (C) 2008 Funambol, Inc.  All rights reserved.
-#
-#  Before running this script:
-#  - set the JAVA_HOME
+# Copyright (C) 2009 Funambol, Inc.  All rights reserved.
 #
 
 # Setting CMD_HOME
@@ -25,22 +22,22 @@ PRGDIR=`dirname "$PRG"`
 
 CMD_HOME=`cd "$PRGDIR/.." ; pwd`
 
-BUNDLED_JAVA_HOME=
+#
+# If JAVA_HOME points to a jdk, it is taken to launch the client, it the java
+# command in the path is used.
+#
+JAVA_CMD=bin/java
 
-if [ ! -z "$BUNDLED_JAVA_HOME" ]; then
-   JAVA_HOME=$BUNDLED_JAVA_HOME
-fi
-
-if [ -z "$JAVA_HOME" ]; then
-  echo "Please, set JAVA_HOME before running this script."
-  exit 1
-fi
-
-if [ ! -f "$JAVA_HOME/bin/java" ]
+if [ ! -f "$JAVA_HOME/$JAVA_CMD" ]
 then
-    echo "Please set JAVA_HOME to the path of a valid jre."
-    exit;
+    JAVA_CMD="java"
 fi
+
+if [ -f "$JAVA_HOME/$JAVA_CMD" ]
+then
+    JAVA_CMD="$JAVA_HOME"/$JAVA_CMD
+fi
+
 
 # Setting classpath
 cd "$CMD_HOME/lib"
@@ -51,4 +48,5 @@ cd "$CMD_HOME"
 
 LANG=en_US.UTF-8
 
-$JAVA_HOME/bin/java $* com.funambol.lanciadelta.LanciaDeltaShell
+echo "Using $JAVA_CMD"
+$JAVA_CMD $* com.funambol.lanciadelta.LanciaDeltaShell
