@@ -140,4 +140,10 @@
         </plugins>
     </build>
 
+    <scm>
+        <connection>scm:git:git://github.com/stefanofornari/lanciadelta.git</connection>
+        <developerConnection>scm:git:git://github.com/stefanofornari/lanciadelta.git</developerConnection>
+        <url>http://github.com/stefanofornari/lanciadelta/tree/master</url>
+    </scm>
+
 </project>
