@@ -1,5 +1,4 @@
 initialize() {
-    print("LanciaDelta shell ${project.version}\n");
+    bsh.prompt = "rally> ";
+    show();
 }
-
-show();

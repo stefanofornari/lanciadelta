@@ -31,7 +31,6 @@ package com.funambol.lanciadelta;
 import bsh.Interpreter;
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
 import com.rallydev.webservice.v1_10.domain.Workspace;
-import com.rallydev.webservice.v1_10.service.RallyService;
 import java.io.InputStreamReader;
 import org.apache.commons.lang.StringUtils;
 
@@ -63,15 +62,18 @@ implements Constants {
                         + RALLY_URL
                         ;
 
-        System.out.println(rallyUrl + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
-        
         service = LanciaDeltaService.getInstance();
 
         workspace = new Workspace();
         workspace.setRef(rallyUrl + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
         service.read(workspace);
 
-        interpreter = new Interpreter();
+        interpreter = new Interpreter( 
+            new InputStreamReader(System.in),
+            System.out,
+            System.err,
+            true
+        );
         interpreter.set(RALLY_SERVICE_OBJECT, service);
         interpreter.set(RALLY_WORKSPACE_OBJECT, workspace);
         interpreter.setShowResults(true);
@@ -100,7 +102,7 @@ implements Constants {
 
         while (true) {
             try {
-                shell.getInterpreter().eval(new InputStreamReader(System.in));
+                shell.getInterpreter().run();
             } catch (Exception e) {
                 System.err.println("ERR: " + e.getMessage());
                 System.err.println(">>>");
@@ -108,7 +110,7 @@ implements Constants {
                 System.err.println("<<<");
             }
         }
-        
+ 
      }
 
     // --------------------------------------------------------- Private methods
