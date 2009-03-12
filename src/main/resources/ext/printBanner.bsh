@@ -1,0 +1,3 @@
+printBanner() {
+    print("LanciaDelta shell ${project.version} - By Funambol\n");
+}
