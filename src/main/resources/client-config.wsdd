@@ -1,0 +1,12 @@
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <transport name="http" pivot="java:org.apache.axis.transport.http.HTTPSender"/>
+  <globalConfiguration >
+   <requestFlow >
+    <handler type="java:com.funambol.lanciadelta.rally.IntegrationHeadersHandler">
+      <parameter name="X-RallyIntegrationName" value="${project.artifactId}"/>
+      <parameter name="X-RallyIntegrationVendor" value="${project.groupId}"/>
+      <parameter name="X-RallyIntegrationVersion" value="${version}"/>
+    </handler>
+   </requestFlow >
+  </globalConfiguration >
+</deployment>
