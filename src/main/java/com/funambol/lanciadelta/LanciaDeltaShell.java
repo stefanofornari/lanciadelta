@@ -31,7 +31,9 @@ package com.funambol.lanciadelta;
 import bsh.Interpreter;
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
 import com.rallydev.webservice.v1_10.domain.Workspace;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 
 
@@ -83,7 +85,6 @@ implements Constants {
     }
     
     // ---------------------------------------------------------- Public methods
-    
     public Interpreter getInterpreter() {
         return interpreter;
     }
@@ -92,6 +93,12 @@ implements Constants {
 
     public static void main(String[] args) throws Exception {
         LanciaDeltaShell shell = null;
+
+        //
+        // We read the project artifactid, groupid and version and set them
+        // in the System.properties for further use
+        //
+        //readProjectProperties();
         
         try {
             shell = new LanciaDeltaShell();
@@ -140,6 +147,28 @@ implements Constants {
 
     private String getMissingPropertyMessage(String p) {
         return "Missing " + p + ". Use -D" + p + "=<value>";
+    }
+
+    /**
+     * Reads maven project properties from META-INF/com.funambol/lanciadelta/pom.properties
+     * and set artifactid, groupid and version as system properties.
+     */
+    private static void readProjectProperties() {
+        InputStream is =
+            LanciaDeltaShell.class.getResourceAsStream("META-INF/com.funambol/lanciadelta/pom.properties");
+
+        if (is != null) {
+            Properties projectProperties = new Properties();
+
+            try {
+                projectProperties.load(is);
+            } catch (Exception e) {
+                System.err.println("Error reading properties file: " + e);
+            }
+
+            System.out.println("project properties: " + projectProperties);
+            System.getProperties().putAll(projectProperties);
+        }
     }
 
 }

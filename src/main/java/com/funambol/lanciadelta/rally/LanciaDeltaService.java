@@ -43,10 +43,13 @@ import com.rallydev.webservice.v1_10.service.RallyServiceServiceLocator;
 import com.rallydev.webservice.v1_10.service.RallyServiceSoapBindingStub;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.rpc.Service;
+import javax.xml.rpc.handler.MessageContext;
 import org.apache.axis.client.Stub;
+import org.apache.axis.transport.http.HTTPConstants;
 
 /**
  *
@@ -236,15 +239,13 @@ implements RallyService, Constants {
                     +     LanciaDeltaService.RALLY_SERVICE_URL
             );
 
-             System.out.println("url: " + url);
-
             RallyService service = (new LanciaDeltaServiceLocator()).getRallyService(url);
 
             // set authentication information on the service
             Stub stub = (Stub) service;
             stub.setUsername(System.getProperty(PROPERTY_USERNAME));
             stub.setPassword(System.getProperty(PROPERTY_PASSWORD));
-
+            
             // Configure the service to maintain an HTTP session cookie
             stub.setMaintainSession(true);
 

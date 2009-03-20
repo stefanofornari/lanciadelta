@@ -52,6 +52,15 @@
 
     <fileSets>
         <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>Funambol/tools/rally</outputDirectory>
+            <lineEnding>dos</lineEnding>
+            <includes>
+                <include>client-config.wsdd</include>
+            </includes>
+            <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
             <directory>src/main/resources/bin</directory>
             <outputDirectory>Funambol/tools/rally/bin</outputDirectory>
             <lineEnding>dos</lineEnding>

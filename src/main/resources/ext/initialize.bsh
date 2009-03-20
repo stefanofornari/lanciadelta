@@ -1,4 +1,3 @@
 initialize() {
     bsh.prompt = "rally> ";
-    show();
 }
