@@ -166,7 +166,6 @@ implements Constants {
                 System.err.println("Error reading properties file: " + e);
             }
 
-            System.out.println("project properties: " + projectProperties);
             System.getProperties().putAll(projectProperties);
         }
     }

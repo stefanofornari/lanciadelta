@@ -66,7 +66,7 @@ implements Constants {
 
     public void testAll() {
         File[] scripts = new File(SCRIPT_PATH).listFiles();
-
+        
         for (File script: scripts) {
             if (script.getName().endsWith(".bsh")) {
                 try {

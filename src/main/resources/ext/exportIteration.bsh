@@ -30,7 +30,7 @@ void formatStoryIntoWiki1(story, line) {
                              .replaceAll("<li>", "* ")
                              .replaceAll("</li>", "");
 
-    line.append("||").append(description)
+    line.append("||").append((description.length()>0) ? description : " ")
         .append("||").append(story.scheduleState)
         .append("||").append("" + story.planEstimate).append("||")
         .append('\n');
