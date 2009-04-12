@@ -37,7 +37,7 @@ void formatStoryIntoWiki1(story, line) {
 }
 
 String exportIteration(String name, String type, int descriptionLength) {
-    stories = rally.getIterationStories(workspace, name);
+    stories = rally.getIterationStories(name);
 
     list = new StringBuffer();
 

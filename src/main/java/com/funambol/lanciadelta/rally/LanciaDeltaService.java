@@ -42,14 +42,12 @@ import com.rallydev.webservice.v1_10.service.RallyService;
 import com.rallydev.webservice.v1_10.service.RallyServiceServiceLocator;
 import com.rallydev.webservice.v1_10.service.RallyServiceSoapBindingStub;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.rpc.Service;
-import javax.xml.rpc.handler.MessageContext;
 import org.apache.axis.client.Stub;
-import org.apache.axis.transport.http.HTTPConstants;
 
 /**
  *
@@ -73,17 +71,16 @@ implements RallyService, Constants {
     }
 
     /**
-     * Returns the iterations withe the given name.
+     * Returns the iterations with the given name.
      *
-     * @param workspace the workspace into which make the search
      * @param name the iteration name
      *
      * @return the iterations with the given name
      *
-     * @throws Exception in case of errors
+     * @throws LanciaDeltaException in case of errors
      */
-    public List<Iteration> getIterations(Workspace workspace, String name) 
-    throws RallyException{
+    public List<Iteration> getIterations(String name) 
+    throws LanciaDeltaException{
         final int PAGE = 50;
         ArrayList<Iteration> iterations = new ArrayList();
 
@@ -92,7 +89,7 @@ implements RallyService, Constants {
         long i = 1, tot = 0;
         do {
             try {
-                rs = query(workspace, ITERATION, "(Name = " + name + ")", "", false, i, PAGE);
+                rs = query(ITERATION, "(Name = " + name + ")", "", false, i, PAGE);
             
                 DomainObject[] results = rs.getResults();
                 tot = rs.getTotalResultCount();
@@ -105,7 +102,7 @@ implements RallyService, Constants {
                     ++i;
                 }
             } catch (Exception e) {
-                throw new RallyException("Error getting the iterations with name" + name, e);
+                throw new LanciaDeltaException("Error getting the iterations with name" + name, e);
             }
         } while (i<=tot);
 
@@ -114,27 +111,99 @@ implements RallyService, Constants {
     }
 
     /**
+     * Returns the iterations scheduled for the given release
+     *
+     * @param releaseName the release name
+     *
+     * @return the iterations scheduled for the given release
+     *
+     * @throws LanciaDeltaException in case of errors
+     */
+    public List<Iteration> getReleaseIterations(String releaseName)
+    throws LanciaDeltaException {
+        final int PAGE = 50;
+        ArrayList<Iteration> iterations = new ArrayList();
+
+        Release release = getRelease(releaseName);
+
+        QueryResult rs = null;
+        boolean cont = true;
+        long i = 1, tot = 0;
+        do {
+            try {
+                rs = query(ITERATION, "(Release = " + release.getRef() + ")", "", false, i, PAGE);
+
+                DomainObject[] results = rs.getResults();
+                tot = rs.getTotalResultCount();
+
+                for (DomainObject r: results) {
+                    Iteration iteration = new Iteration();
+                    iteration.setRef(r.getRef());
+                    iteration = (Iteration)read(iteration);
+                    iterations.add(iteration);
+                    ++i;
+                }
+            } catch (Exception e) {
+                throw new LanciaDeltaException("Error getting the iterations with name" + releaseName, e);
+            }
+        } while (i<=tot);
+
+        return iterations;
+
+    }
+
+    /**
+     * Returns the release object given the release name
+     *
+     * @param name the release name
+     *
+     * @return the release object given the release name
+     *
+     * @throws LanciaDeltaException in case of errors
+     */
+    public Release getRelease(String name)
+    throws LanciaDeltaException {
+        final int PAGE = 20;
+
+        Release release = null;
+        
+        QueryResult rs = null;
+        try {
+            rs = query(RELEASE, "(Name = " + name + ")", "", true, 1, PAGE);
+
+            DomainObject[] results = rs.getResults();
+
+            if (results.length>0) {
+                release = (Release)results[0];
+            }
+        } catch (Exception e) {
+            throw new LanciaDeltaException("Error getting the iterations with name" + name, e);
+        }
+
+        return release;
+
+    }
+
+    /**
      * Returns the user stories scheduled in the given iteration.
      * <br><b>
-     * NOTE: we assume that there are not iterations with the same name in a
-     * workspace.
+     * NOTE: we assume that there are not iterations with the same name
      * </b>
      *
      * @param name of the iteration reference id
-     * @param w Rally workspace
      *
      * @return the user stories scheduled in the given iteration
      *
-     * @throws RallyException in case of errors
+     * @throws LanciaDeltaException in case of errors
      */
-    public List<Artifact> getIterationStories(Workspace w, String name)
-    throws RallyException{
+    public List<Artifact> getIterationStories(String name)
+    throws LanciaDeltaException{
         final int PAGE = 10;
 
-        List<Iteration> iterations = getIterations(w, name);
+        List<Iteration> iterations = getIterations(name);
 
         if (iterations.size() == 0) {
-            throw new RallyException("Iteration '" + name + "' not found");
+            throw new LanciaDeltaException("Iteration '" + name + "' not found");
         }
 
         final String QUERY = "(Iteration = " 
@@ -148,7 +217,7 @@ implements RallyService, Constants {
         QueryResult rs = null;
         do {
             try {
-                rs = query(w, HIERARCHICAL_REQUIREMENT, QUERY, "", true, i, PAGE);
+                rs = query(HIERARCHICAL_REQUIREMENT, QUERY, "", true, i, PAGE);
             
                 DomainObject[] results = rs.getResults();
                 tot = rs.getTotalResultCount();
@@ -158,7 +227,7 @@ implements RallyService, Constants {
                     ++i;
                 }
             } catch (Exception e) {
-                throw new RallyException("Error reading itertion stories for " + iterations.get(0).getRef(), e);
+                throw new LanciaDeltaException("Error reading itertion stories for " + iterations.get(0).getRef(), e);
             }
         } while (i<=tot);
 
@@ -168,19 +237,18 @@ implements RallyService, Constants {
     /**
      * Returns the user story with the given id.
      *
-     * @param workspace the workspace into which make the search
      * @param id the user story id
      *
      * @return the user story with the given
      *
-     * @throws RallyException in case of errors
+     * @throws LanciaDeltaException in case of errors
      */
-    public HierarchicalRequirement getStory(Workspace workspace, String id)
-    throws RallyException{
+    public HierarchicalRequirement getStory(String id)
+    throws LanciaDeltaException{
         final int PAGE = 50;
 
         try {
-            QueryResult rs = query(workspace, HIERARCHICAL_REQUIREMENT, "(FormattedID = " + id + ")", "", true, 1, PAGE);
+            QueryResult rs = query(HIERARCHICAL_REQUIREMENT, "(FormattedID = " + id + ")", "", true, 1, PAGE);
             DomainObject[] results = rs.getResults();
 
             if ((results != null) && (results.length > 0)) {
@@ -202,11 +270,44 @@ implements RallyService, Constants {
                 return story;
             }
         } catch (Exception e) {
-            throw new RallyException(e);
+            throw new LanciaDeltaException(e);
         }
 
-        throw new RallyException("No user story found with ID " + id);
+        throw new LanciaDeltaException("No user story found with ID " + id);
 
+    }
+
+    // --------------------------------------------------------- Private methods
+
+    /**
+     * The same as query (null, ...)
+     * 
+     * @param artifactType
+     * @param query
+     * @param order
+     * @param fetch
+     * @param start
+     * @param pageSize
+     *
+     * @return the same as query (null, ...)
+     */
+    private QueryResult query (
+        String artifactType,
+        String query,
+        String order,
+        boolean fetch,
+        long start,
+        long pageSize
+    ) throws RemoteException {
+        return query(
+                   (Workspace)null,
+                   artifactType,
+                   query,
+                   order,
+                   fetch,
+                   start,
+                   pageSize
+         );
     }
 
     // --------------------------------------------------------------- Singleton
@@ -214,10 +315,12 @@ implements RallyService, Constants {
 
     /**
      *
-     * @return
-     * @throws com.funambol.lanciadelta.rally.RallyException
+     * @return the singleton insatnce of LanciaDeltaService
+     *
+     * @throws com.funambol.lanciadelta.rally.LanciaDeltaException
      */
-    public synchronized static LanciaDeltaService getInstance() throws RallyException {
+    public synchronized static LanciaDeltaService getInstance()
+    throws LanciaDeltaException {
         if (instance != null) {
             return instance;
         }
@@ -230,7 +333,7 @@ implements RallyService, Constants {
      *
      * @throws java.lang.Exception
      */
-    private static LanciaDeltaService initializeRallyService() throws RallyException {
+    private static LanciaDeltaService initializeRallyService() throws LanciaDeltaException {
         try {
             URL url = new URL(
                           "https://"
@@ -251,7 +354,7 @@ implements RallyService, Constants {
 
             return (LanciaDeltaService)service;
         } catch (Exception e) {
-            throw new RallyException(e);
+            throw new LanciaDeltaException(e);
         }
     }
 

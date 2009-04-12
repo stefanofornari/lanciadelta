@@ -30,7 +30,6 @@ package com.funambol.lanciadelta;
 
 import bsh.Interpreter;
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
-import com.rallydev.webservice.v1_10.domain.Workspace;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
@@ -51,9 +50,6 @@ implements Constants {
 
     private LanciaDeltaService service;
 
-    private Workspace workspace;
-
-
     // ------------------------------------------------------------ Constructors
 
     public LanciaDeltaShell() throws Exception {
@@ -66,10 +62,6 @@ implements Constants {
 
         service = LanciaDeltaService.getInstance();
 
-        workspace = new Workspace();
-        workspace.setRef(rallyUrl + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
-        service.read(workspace);
-
         interpreter = new Interpreter( 
             new InputStreamReader(System.in),
             System.out,
@@ -77,7 +69,6 @@ implements Constants {
             true
         );
         interpreter.set(RALLY_SERVICE_OBJECT, service);
-        interpreter.set(RALLY_WORKSPACE_OBJECT, workspace);
         interpreter.setShowResults(true);
 
         interpreter.eval("importCommands(\"/ext\");");

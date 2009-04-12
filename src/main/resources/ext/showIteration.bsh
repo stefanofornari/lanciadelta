@@ -3,7 +3,7 @@ import com.rallydev.webservice.v1_10.domain.Iteration;
 bsh.help.showIteration = "usage: showIteration( String name )";
 
 showIteration(name) {
-    iterations = rally.getIterations(workspace, name);
+    iterations = rally.getIterations(name);
 
     template = getResourceAsString("/templates/iteration");
 

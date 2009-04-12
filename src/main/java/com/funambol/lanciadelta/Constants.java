@@ -33,13 +33,6 @@ package com.funambol.lanciadelta;
  * @author ste
  */
 public interface Constants {
-    //
-    // TO DO: to be removed....
-    // ---
-    public final String OID_FUNAMBOL = "157296293";
-    public final String OID_FUNAMBOL_WORKSPACE = "157296296";
-    // ---
-
     public final String PROPERTY_USERNAME = "rally.user";
     public final String PROPERTY_PASSWORD = "rally.password";
     public final String PROPERTY_HOST = "rally.host";
@@ -55,6 +48,7 @@ public interface Constants {
     public final String HIERARCHICAL_REQUIREMENT = "hierarchicalrequirement";
     public final String STORY = "story";
     public final String ITERATION = "iteration";
+    public final String RELEASE = "release";
 
     public final String RALLY_INTEGRATION_VERSION = "Rally Java REST API 1.10";
     public final String RALLY_SERVICE_OBJECT = "rally";

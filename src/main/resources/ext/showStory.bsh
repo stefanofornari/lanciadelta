@@ -3,7 +3,7 @@ import com.rallydev.webservice.v1_10.domain.Iteration;
 bsh.help.showStory = "usage: showStory( String id )";
 
 showStory(id) {
-    story = rally.getStory(workspace, id);
+    story = rally.getStory(id);
 
     template = getResourceAsString("/templates/story");
 

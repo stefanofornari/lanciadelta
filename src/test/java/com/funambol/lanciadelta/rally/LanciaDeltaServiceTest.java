@@ -30,11 +30,16 @@ package com.funambol.lanciadelta.rally;
 import com.funambol.lanciadelta.Constants;
 import junit.framework.TestCase;
 
+import com.rallydev.webservice.v1_10.domain.Release;
+import com.rallydev.webservice.v1_10.domain.Workspace;
+
 /**
  *
  * @author ste
  */
-public class LanciaDeltaServiceTest extends TestCase {
+public class LanciaDeltaServiceTest
+extends TestCase
+implements Constants {
     
     public LanciaDeltaServiceTest(String testName) {
         super(testName);
@@ -62,7 +67,18 @@ public class LanciaDeltaServiceTest extends TestCase {
         assertTrue(service1 == service2);
     }
 
-    public void testObject2Map() {
+    public void testGetRelease() throws Exception {
+        final String TEST_RELEASE_NAME = "1.0";
+
+        LanciaDeltaService service = LanciaDeltaService.getInstance();
+
+        Release r = service.getRelease("none");
+
+        assertNull(r);
+
+        r = service.getRelease(TEST_RELEASE_NAME);
+
+        assertEquals(TEST_RELEASE_NAME, r.getName());
     }
 
 }
