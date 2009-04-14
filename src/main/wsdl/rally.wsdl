@@ -377,6 +377,7 @@
               <xsd:element name="DevDone" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Estimated" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Funambolist" type="xsd:string" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Public" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Requirement" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="SpecialCode" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Team" type="xsd:string" minOccurs="0" maxOccurs="1" />
@@ -588,6 +589,7 @@
               <xsd:element name="ToDo" type="xsd:double" minOccurs="0" maxOccurs="1" />
               <xsd:element name="WorkProduct" type="rallydomain:Artifact" minOccurs="0" maxOccurs="1" />
               <xsd:element name="BV" type="xsd:double" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Funambolist" type="xsd:string" minOccurs="0" maxOccurs="1" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -624,6 +626,7 @@
               <xsd:element name="Results" type="rallydomain:TestCaseResultsType" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Risk" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Steps" type="rallydomain:TestCaseStepsType" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="TestFolder" type="rallydomain:TestFolder" minOccurs="0" maxOccurs="1" />
               <xsd:element name="Type" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="ValidationExpectedResult" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="ValidationInput" type="xsd:string" minOccurs="0" maxOccurs="1" />
@@ -661,6 +664,51 @@
               <xsd:element name="Input" type="xsd:string" minOccurs="0" maxOccurs="1" />
               <xsd:element name="StepIndex" type="xsd:long" minOccurs="0" maxOccurs="1" />
               <xsd:element name="TestCase" type="rallydomain:TestCase" minOccurs="0" maxOccurs="1" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="TestFolderChildrenType">
+        <xsd:sequence>
+          <xsd:element name="TestFolder" type="rallydomain:TestFolder" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TestFolderTestCasesType">
+        <xsd:sequence>
+          <xsd:element name="TestCase" type="rallydomain:TestCase" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TestFolder">
+        <xsd:complexContent>
+          <xsd:extension base="rallydomain:WorkspaceDomainObject">
+            <xsd:sequence>
+              <xsd:element name="Children" type="rallydomain:TestFolderChildrenType" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="FormattedID" type="xsd:string" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Parent" type="rallydomain:TestFolder" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Project" type="rallydomain:Project" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="TestCases" type="rallydomain:TestFolderTestCasesType" minOccurs="0" maxOccurs="1" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="TestSetTestCasesType">
+        <xsd:sequence>
+          <xsd:element name="TestCase" type="rallydomain:TestCase" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TestSet">
+        <xsd:complexContent>
+          <xsd:extension base="rallydomain:Artifact">
+            <xsd:sequence>
+              <xsd:element name="Blocked" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Iteration" type="rallydomain:Iteration" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="PlanEstimate" type="xsd:double" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Project" type="rallydomain:Project" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Rank" type="xsd:double" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="Release" type="rallydomain:Release" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="ScheduleState" type="xsd:string" minOccurs="0" maxOccurs="1" />
+              <xsd:element name="TestCases" type="rallydomain:TestSetTestCasesType" minOccurs="0" maxOccurs="1" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -1043,7 +1091,7 @@
   </wsdl:binding>
   <wsdl:service name="RallyServiceService">
     <wsdl:port binding="impl:RallyServiceSoapBinding" name="RallyService">
-      <wsdlsoap:address location="https://rally1.rallydev.com:443/slm/webservice/1.10/RallyService" />
+      <wsdlsoap:address location="https://rally1.rallydev.com/slm/webservice/1.10/rallyservice" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
