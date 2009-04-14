@@ -14,7 +14,7 @@ import java.util.List;
 public class App implements Constants {
 
     public static void main(String[] args) throws Exception {
-        RallyService service = LanciaDeltaService.getInstance();
+        LanciaDeltaService service = LanciaDeltaService.getInstance();
 
         User user = (User)service.getCurrentUser();
 
@@ -24,15 +24,15 @@ public class App implements Constants {
 
         System.out.println("projects: " + projects);
 
-        Workspace w = new Workspace();
-        w.setRef(RALLY_URL + '/' + WORKSPACE + '/' + OID_FUNAMBOL_WORKSPACE);
-        w = (Workspace)service.read(w);
-
-        List<Iteration> iterations = ((LanciaDeltaService)service).getIterations(w, "FEB0901");
+        List<Iteration> iterations = (service.getIterations("FEB0901"));
         for (Iteration i: iterations) {
             System.out.println("Iteration: " + i.getName());
         }
 
+        /*
+        Workspace w = new Workspace();
+        w.setRef(RALLY_URL + '/' + WORKSPACE + <aworkspace>);
+        w = (Workspace)service.read(w);
         projects = w.getProjects();
         for (Project p: projects) {
             p = (Project)service.read(p);
@@ -44,6 +44,7 @@ public class App implements Constants {
 
             }
         }
+        */
 
         final String Q = "(Iteration = https://rally1.rallydev.com:443/slm/webservice/1.10/iteration/171173739)";
         final int PAGE = 10;
@@ -51,7 +52,7 @@ public class App implements Constants {
         boolean cont = true;
         long i = 1, tot = 0;
         do {
-            QueryResult rs = service.query(w, HIERARCHICAL_REQUIREMENT, Q, "", true, i, PAGE);
+            QueryResult rs = service.query(null, HIERARCHICAL_REQUIREMENT, Q, "", true, i, PAGE);
             DomainObject[] results = rs.getResults();
             tot = rs.getTotalResultCount();
 
