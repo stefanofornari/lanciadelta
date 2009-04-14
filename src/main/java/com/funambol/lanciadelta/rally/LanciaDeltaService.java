@@ -111,33 +111,56 @@ implements RallyService, Constants {
     }
 
     /**
+     * Returns the public stories scheduled for the given release. A story is
+     * public if the flag <code>public</code> is set true.
+     *
+     * @param releaseName the release name
+     *
+     * @return the public stories scheduled for the given releas
+     *
+     * @throws LanciaDeltaException in case of errors
+     */
+    public List<HierarchicalRequirement> getReleaseStories(String releaseName)
+    throws LanciaDeltaException {
+        return getReleaseStories(releaseName, true);
+    }
+
+    /**
      * Returns the stories scheduled for the given release
      *
      * @param releaseName the release name
+     * @param publicOnly true to filter only public stories
      *
      * @return the iterations scheduled for the given release
      *
      * @throws LanciaDeltaException in case of errors
      */
-    public List<HierarchicalRequirement> getReleaseStories(String releaseName)
+    public List<HierarchicalRequirement> getReleaseStories(
+                                             String  releaseName,
+                                             boolean publicOnly)
     throws LanciaDeltaException {
         final int PAGE = 50;
         ArrayList<HierarchicalRequirement> stories = new ArrayList<HierarchicalRequirement>();
 
         Release release = getRelease(releaseName);
 
+        String q = (publicOnly ? "(" : "")
+                 + "(Release = "
+                 + release.getRef()
+                 + ")"
+                 + (publicOnly ? " and (Public = true))" : ")")
+                 ;
+
         QueryResult rs = null;
         long i = 1, tot = 0;
         do {
             try {
                 rs = query(
-                         HIERARCHICAL_REQUIREMENT  ,
-                         "(Release = "             +
-                         release.getRef()          +
-                         ")"                       ,
-                         ""                        ,
-                         true                      ,
-                         i                         ,
+                         HIERARCHICAL_REQUIREMENT,
+                         q                       ,
+                         ""                      ,
+                         true                    ,
+                         i                       ,
                          PAGE
                      );
 
