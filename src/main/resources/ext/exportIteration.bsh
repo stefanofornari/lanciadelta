@@ -11,48 +11,58 @@ bsh.help.getResource = "usage: exportIteration( String name, String type, int de
 
 import org.apache.commons.lang.StringUtils;
 
-void formatStoryIntoWiki1(story, line) {
-    line.append("||").append(story.formattedID)
-        .append("||").append(story.name);
-
-    //
-    // NOTE: lists are all turned into unnumbered lists
-    //
-    String description = story.description.replaceAll("\r\n", " [[BR]] ");
-
-    description = description.replaceAll("\\|\\|", "<doublepipe>")
-                             .replaceAll("<br>", " [[BR]] ")
-                             .replaceAll("<br></br>", " [[BR]] ")
-                             .replaceAll("<br />", " [[BR]] ")
-                             .replaceAll("<br/>", " [[BR]] ")
-                             .replaceAll("<ul>", "")
-                             .replaceAll("</ul>", "")
-                             .replaceAll("<li>", "* ")
-                             .replaceAll("</li>", "");
-
-    line.append("||").append((description.length()>0) ? description : " ")
-        .append("||").append(story.scheduleState)
-        .append("||").append("" + story.planEstimate).append("||")
-        .append('\n');
-}
-
-String exportIteration(String name, String type, int descriptionLength) {
-    stories = rally.getIterationStories(name);
-
-    list = new StringBuffer();
+String formatStoriesIntoWiki1(stories) {
+    StringBuffer output = new StringBuffer();
 
     for (story: stories) {
-        if (type == "wiki1") {
-            formatStoryIntoWiki1(story, list);
-        } else {
-            list.append('"').append(story.formattedID).append('"').append(',')
-                .append('"').append(story.name.replaceAll("\"","\"\"")).append('"').append(',')
-                .append('"').append(StringUtils.abbreviate(story.description, 35).replaceAll("\"", "\"\"")).append('"').append(',')
-                .append('"').append(story.scheduleState).append('"').append(',')
-                .append('"').append("" + story.planEstimate).append('"')
-                .append("\n");
-        }
+        output.append("||").append(story.formattedID)
+              .append("||").append(story.name);
+
+        //
+        // NOTE: lists are all turned into unnumbered lists
+        //
+        String description = story.description.replaceAll("\r\n", " [[BR]] ");
+
+        description = description.replaceAll("\\|\\|", "<doublepipe>")
+                                 .replaceAll("<br>", " [[BR]] ")
+                                 .replaceAll("<br></br>", " [[BR]] ")
+                                 .replaceAll("<br />", " [[BR]] ")
+                                 .replaceAll("<br/>", " [[BR]] ")
+                                 .replaceAll("<ul>", "")
+                                 .replaceAll("</ul>", "")
+                                 .replaceAll("<li>", "* ")
+                                 .replaceAll("</li>", "");
+
+        output.append("||").append((description.length()>0) ? description : " ")
+              .append("||").append(story.scheduleState)
+              .append("||").append("" + story.planEstimate).append("||")
+              .append('\n');
     }
 
-    return list.toString();
+    return output.toString();
+}
+
+String formatStoriesIntoCSV(stories) {
+    StringBuffer output = new StringBuffer();
+
+    for (story: stories) {
+        output.append('"').append(story.formattedID).append('"').append(',')
+              .append('"').append(story.name.replaceAll("\"","\"\"")).append('"').append(',')
+              .append('"').append(StringUtils.abbreviate(story.description, 35).replaceAll("\"", "\"\"")).append('"').append(',')
+              .append('"').append(story.scheduleState).append('"').append(',')
+              .append('"').append("" + story.planEstimate).append('"')
+              .append('\n');
+    }
+
+    return output.toString();
+}
+
+String exportIteration(String name, int descriptionLength, String printer) {
+    stories = rally.getIterationStories(name);
+
+    try {
+        return eval(printer + "(stories)");
+    } catch (EvalError e) {
+        throw new IllegalArgumentException("Invalid printer method: '" + printer +"'", e);
+    }
 }
