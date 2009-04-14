@@ -111,7 +111,7 @@ implements RallyService, Constants {
     }
 
     /**
-     * Returns the iterations scheduled for the given release
+     * Returns the stories scheduled for the given release
      *
      * @param releaseName the release name
      *
@@ -119,37 +119,49 @@ implements RallyService, Constants {
      *
      * @throws LanciaDeltaException in case of errors
      */
-    public List<Iteration> getReleaseIterations(String releaseName)
+    public List<HierarchicalRequirement> getReleaseStories(String releaseName)
     throws LanciaDeltaException {
         final int PAGE = 50;
-        ArrayList<Iteration> iterations = new ArrayList();
+        ArrayList<HierarchicalRequirement> stories = new ArrayList<HierarchicalRequirement>();
 
         Release release = getRelease(releaseName);
 
         QueryResult rs = null;
-        boolean cont = true;
         long i = 1, tot = 0;
         do {
             try {
-                rs = query(ITERATION, "(Release = " + release.getRef() + ")", "", false, i, PAGE);
+                rs = query(
+                         HIERARCHICAL_REQUIREMENT  ,
+                         "(Release = "             +
+                         release.getRef()          +
+                         ")"                       ,
+                         ""                        ,
+                         true                      ,
+                         i                         ,
+                         PAGE
+                     );
 
                 DomainObject[] results = rs.getResults();
                 tot = rs.getTotalResultCount();
 
                 for (DomainObject r: results) {
-                    Iteration iteration = new Iteration();
-                    iteration.setRef(r.getRef());
-                    iteration = (Iteration)read(iteration);
-                    iterations.add(iteration);
+                    HierarchicalRequirement story = (HierarchicalRequirement)r;
+                    Iteration iteration = story.getIteration();
+
+                    if (iteration != null) {
+                        story.setIteration(
+                            (Iteration)read(iteration)
+                        );
+                    }
+                    stories.add(story);
                     ++i;
                 }
             } catch (Exception e) {
-                throw new LanciaDeltaException("Error getting the iterations with name" + releaseName, e);
+                throw new LanciaDeltaException("Error getting the stories for the release " + releaseName, e);
             }
         } while (i<=tot);
 
-        return iterations;
-
+        return stories;
     }
 
     /**
@@ -277,8 +289,6 @@ implements RallyService, Constants {
 
     }
 
-    // --------------------------------------------------------- Private methods
-
     /**
      * The same as query (null, ...)
      * 
@@ -291,7 +301,7 @@ implements RallyService, Constants {
      *
      * @return the same as query (null, ...)
      */
-    private QueryResult query (
+    public QueryResult query (
         String artifactType,
         String query,
         String order,
@@ -309,6 +319,8 @@ implements RallyService, Constants {
                    pageSize
          );
     }
+
+    // --------------------------------------------------------- Private methods
 
     // --------------------------------------------------------------- Singleton
 
