@@ -1,3 +1,0 @@
-fail(String message) {
-    throw new Exception(message);
-}
