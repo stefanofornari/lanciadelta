@@ -65,6 +65,12 @@
             <artifactId>core-framework</artifactId>
             <version>8.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>funambol</groupId>
+            <artifactId>test-addons</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -82,7 +88,6 @@
                     <exclude>bin/</exclude>
                     <exclude>ext/</exclude>
                 </excludes>
-                <filtering>false</filtering>
             </resource>
         </resources>
 
