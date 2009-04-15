@@ -148,7 +148,7 @@ implements RallyService, Constants {
                  + "(Release = "
                  + release.getRef()
                  + ")"
-                 + (publicOnly ? " and (Public = true))" : ")")
+                 + (publicOnly ? " and (Public = true))" : "")
                  ;
 
         QueryResult rs = null;
@@ -221,7 +221,7 @@ implements RallyService, Constants {
 
     /**
      * Returns the user stories scheduled in the given iteration.
-     * <br><b>
+     * <br/><b>
      * NOTE: we assume that there are not iterations with the same name
      * </b>
      *
