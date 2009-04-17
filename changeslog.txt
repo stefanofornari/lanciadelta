@@ -1,3 +1,9 @@
+---------------
+LanciaDelta 1.1
+---------------
+2909-04-17
+ste:
+  - 1.1 released
 2009-04-15
 ste:
   - refactory to allow adding a new export format
