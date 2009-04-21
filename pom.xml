@@ -180,11 +180,43 @@
         <url>http://github.com/stefanofornari/lanciadelta/tree/master</url>
     </scm>
 
+<!--
     <distributionManagement>
         <repository>
             <id>filesystem</id>
             <url>file:./target/deploy</url>
         </repository>
     </distributionManagement>
+-->
+<distributionManagement>
+       <site>
+           <id>sites</id>
+           <url>${site.deploy.url}</url>
+       </site>
+       <!--
+           Used to publish final artifacts. The url can be something in the
+           form:
+             - scp://<server>/archiva/repositories/artifacts
+             - dav:http://<server>:<port>/archiva/repositories/artifacts
 
+           Specify artifacts.deploy.url as a profile property in settings.xml
+       -->
+       <repository>
+           <id>artifacts</id>
+           <name>Artifacts repository</name>
+           <url>${artifacts.deploy.url}</url>
+       </repository>
+       <!--
+           Used to publish snapshots. The url can be something in the form:
+             - scp://<server>/archiva/repositories/artifacts
+             - dav:http://<server>:<port>/archiva/repositories/artifacts
+
+           Specify snapshots.deploy.url as a profile property in settings.xml
+       -->
+       <snapshotRepository>
+           <id>snapshots</id>
+           <name>Snapshot repostory</name>
+           <url>${snapshots.deploy.url}</url>
+       </snapshotRepository>
+   </distributionManagement>
 </project>
