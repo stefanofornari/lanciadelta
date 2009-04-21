@@ -49,14 +49,12 @@ testWiki1() {
     TEST1="||US9||multiple subscriptions access||As a user, I want to be able to access to different subscriptions changing the subscription URL. For example, the two versions of Rally have two different URLs of the SOAP API: [[BR]]  [[BR]]   [[BR]]  [[BR]] * community: https://community.rallydev.com:443/slm/webservice/1.10 [[BR]] * enterprise: https://rally1.rallydev.com:443/slm/webservice/1.10 [[BR]]  [[BR]] This URL should be specified as a system property: [[BR]]  [[BR]] -Drally.host=community.rallydev.com/rally1.rallydev.com||Defined||1.0||";
     TEST2="||US11||user stories export - Wiki format 1||As a user, I want to export the user stories scheduled for an iteration with a simple command in to a form suitable for a wiki page in the form: [[BR]]  [[BR]] <doublepipe>field1<doublepipe>field2<doublepipe>field3<doublepipe>...<doublepipe>||Defined||1.0||";
     TEST3="||US7||stories export - \"CSV\"||As a user, I want to export the user stories scheduled for an iteration with a simple command in to a CSV form.||Accepted||5.0||";
-    TEST4="||US20||user story without description|| ||Defined||1.0||";
 
     stories = exportIteration("TESTIT01", 25, "formatStoriesIntoWiki1");
     print("wiki1: " + stories);
     assert(stories.indexOf(TEST1)>=0);
     assert(stories.indexOf(TEST2)>=0);
     assert(stories.indexOf(TEST3)>=0);
-    assert(stories.indexOf(TEST4)>=0);
 
     stories = exportIteration("TESTIT02", 25, "formatStoriesIntoWiki1");
     assert(stories.length() == 0);

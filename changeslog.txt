@@ -1,4 +1,13 @@
 ---------------
+LanciaDelta 1.2
+---------------
+2009-04-21
+ste:
+  - release
+  - added the ability to filter out private user stories
+  - exportIteration now exports only public user stories
+
+---------------
 LanciaDelta 1.1
 ---------------
 2909-04-17

@@ -102,7 +102,7 @@ implements RallyService, Constants {
                     ++i;
                 }
             } catch (Exception e) {
-                throw new LanciaDeltaException("Error getting the iterations with name" + name, e);
+                throw new LanciaDeltaException("Error retrieving the iterations with name" + name, e);
             }
         } while (i<=tot);
 
@@ -139,52 +139,29 @@ implements RallyService, Constants {
                                              String  releaseName,
                                              boolean publicOnly)
     throws LanciaDeltaException {
-        final int PAGE = 50;
-        ArrayList<HierarchicalRequirement> stories = new ArrayList<HierarchicalRequirement>();
-
         Release release = getRelease(releaseName);
 
-        String q = (publicOnly ? "(" : "")
-                 + "(Release = "
-                 + release.getRef()
-                 + ")"
-                 + (publicOnly ? " and (Public = true))" : "")
-                 ;
+        final String Q = (publicOnly ? "(" : "")
+                       + "(Release = "
+                       + release.getRef()
+                       + ")"
+                       + (publicOnly ? " and (Public = true))" : "")
+                       ;
 
-        QueryResult rs = null;
-        long i = 1, tot = 0;
-        do {
-            try {
-                rs = query(
-                         HIERARCHICAL_REQUIREMENT,
-                         q                       ,
-                         ""                      ,
-                         true                    ,
-                         i                       ,
-                         PAGE
-                     );
+        try {
+            List<HierarchicalRequirement> stories = getStories(Q);
 
-                DomainObject[] results = rs.getResults();
-                tot = rs.getTotalResultCount();
-
-                for (DomainObject r: results) {
-                    HierarchicalRequirement story = (HierarchicalRequirement)r;
-                    Iteration iteration = story.getIteration();
-
-                    if (iteration != null) {
-                        story.setIteration(
-                            (Iteration)read(iteration)
-                        );
-                    }
-                    stories.add(story);
-                    ++i;
+            for(HierarchicalRequirement story: stories) {
+                Iteration iteration = story.getIteration();
+                if (iteration != null) {
+                    story.setIteration((Iteration) read(iteration));
                 }
-            } catch (Exception e) {
-                throw new LanciaDeltaException("Error getting the stories for the release " + releaseName, e);
             }
-        } while (i<=tot);
 
-        return stories;
+            return stories;
+        } catch (Exception e) {
+            throw new LanciaDeltaException("Error retrieving the stories for the release " + releaseName, e);
+        }
     }
 
     /**
@@ -220,53 +197,56 @@ implements RallyService, Constants {
     }
 
     /**
+     * Returns the public stories of the given iteration.
+     * <br/><b>
+     * NOTE: we assume that there are not iterations with the same name
+     * </b>
+     *
+     * @param name of the iteration reference id
+     * @param publicOnly true to filter only public stories
+     *
+     * @return the user stories scheduled in the given iteration
+     *
+     * @throws LanciaDeltaException in case of errors
+     */
+    public List<HierarchicalRequirement> getIterationStories(String name)
+    throws LanciaDeltaException{
+        return getIterationStories(name, true);
+    }
+
+    /**
      * Returns the user stories scheduled in the given iteration.
      * <br/><b>
      * NOTE: we assume that there are not iterations with the same name
      * </b>
      *
      * @param name of the iteration reference id
+     * @param publicOnly true to filter only public stories
      *
      * @return the user stories scheduled in the given iteration
      *
      * @throws LanciaDeltaException in case of errors
      */
-    public List<Artifact> getIterationStories(String name)
+    public List<HierarchicalRequirement> getIterationStories(String name, boolean publicOnly)
     throws LanciaDeltaException{
-        final int PAGE = 10;
-
         List<Iteration> iterations = getIterations(name);
 
         if (iterations.size() == 0) {
             throw new LanciaDeltaException("Iteration '" + name + "' not found");
         }
 
-        final String QUERY = "(Iteration = " 
-                           + iterations.get(0).getRef()
-                           + ")"
-                           ;
+        final String Q = (publicOnly ? "(" : "")
+                       + "(Iteration = "
+                       + iterations.get(0).getRef()
+                       + ")"
+                       + (publicOnly ? " and (Public = true))" : "")
+                       ;
 
-        List<Artifact> ret = new ArrayList<Artifact>();
-
-        long i = 1, tot = 0;
-        QueryResult rs = null;
-        do {
-            try {
-                rs = query(HIERARCHICAL_REQUIREMENT, QUERY, "", true, i, PAGE);
-            
-                DomainObject[] results = rs.getResults();
-                tot = rs.getTotalResultCount();
-
-                for (DomainObject o: results) {
-                    ret.add((Artifact)o);
-                    ++i;
-                }
-            } catch (Exception e) {
-                throw new LanciaDeltaException("Error reading itertion stories for " + iterations.get(0).getRef(), e);
-            }
-        } while (i<=tot);
-
-        return ret;
+        try {
+            return getStories(Q);
+        } catch (Exception e) {
+            throw new LanciaDeltaException("Error retrieving the stories for iteration " + name, e);
+        }
     }
 
     /**
@@ -345,6 +325,27 @@ implements RallyService, Constants {
 
     // --------------------------------------------------------- Private methods
 
+    private List<HierarchicalRequirement> getStories(String q) 
+    throws RemoteException {
+        final int PAGE = 50;
+        ArrayList<HierarchicalRequirement> stories = new ArrayList<HierarchicalRequirement>();
+
+        QueryResult rs = null;
+        long i = 1;
+        long tot = 0;
+        do {
+            rs = query(HIERARCHICAL_REQUIREMENT, q, "", true, i, PAGE);
+            DomainObject[] results = rs.getResults();
+            tot = rs.getTotalResultCount();
+            for (DomainObject r : results) {
+                stories.add((HierarchicalRequirement) r);
+                ++i;
+            }
+        } while (i <= tot);
+        
+        return stories;
+    }
+
     // --------------------------------------------------------------- Singleton
 
 
@@ -410,4 +411,6 @@ implements RallyService, Constants {
             }
         }
     }
+
+    
 }
