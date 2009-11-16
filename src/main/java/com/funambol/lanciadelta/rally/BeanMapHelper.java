@@ -33,8 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.funambol.lanciadelta.LanciaDeltaBeanMap;
-import com.rallydev.webservice.v1_10.domain.HierarchicalRequirement;
-import com.rallydev.webservice.v1_10.domain.Iteration;
+import com.rallydev.webservice.v1_14.domain.HierarchicalRequirement;
+import com.rallydev.webservice.v1_14.domain.Iteration;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

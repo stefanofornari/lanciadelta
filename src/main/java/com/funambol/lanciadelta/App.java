@@ -2,8 +2,8 @@ package com.funambol.lanciadelta;
 
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
 
-import com.rallydev.webservice.v1_10.domain.*;
-import com.rallydev.webservice.v1_10.service.*;
+import com.rallydev.webservice.v1_14.domain.*;
+import com.rallydev.webservice.v1_14.service.*;
 import java.util.List;
 
 

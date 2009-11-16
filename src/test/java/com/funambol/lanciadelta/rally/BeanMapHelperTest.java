@@ -30,9 +30,9 @@
 package com.funambol.lanciadelta.rally;
 
 import com.funambol.lanciadelta.Constants;
-import com.rallydev.webservice.v1_10.domain.HierarchicalRequirement;
-import com.rallydev.webservice.v1_10.domain.Iteration;
-import com.rallydev.webservice.v1_10.domain.Project;
+import com.rallydev.webservice.v1_14.domain.HierarchicalRequirement;
+import com.rallydev.webservice.v1_14.domain.Iteration;
+import com.rallydev.webservice.v1_14.domain.Project;
 import java.util.Calendar;
 import java.util.Map;
 import junit.framework.TestCase;

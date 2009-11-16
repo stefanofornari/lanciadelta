@@ -28,13 +28,13 @@
 
 package com.funambol.lanciadelta;
 
-import com.rallydev.webservice.v1_10.domain.Iteration;
-import com.rallydev.webservice.v1_10.domain.Project;
-import com.rallydev.webservice.v1_10.domain.User;
+import com.rallydev.webservice.v1_14.domain.Iteration;
+import com.rallydev.webservice.v1_14.domain.Project;
+import com.rallydev.webservice.v1_14.domain.User;
 import java.net.URL;
 
-import com.rallydev.webservice.v1_10.service.RallyService;
-import com.rallydev.webservice.v1_10.service.RallyServiceServiceLocator;
+import com.rallydev.webservice.v1_14.service.RallyService;
+import com.rallydev.webservice.v1_14.service.RallyServiceServiceLocator;
 
 import org.apache.axis.client.Stub;
 

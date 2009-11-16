@@ -30,8 +30,8 @@ package com.funambol.lanciadelta.rally;
 import com.funambol.lanciadelta.Constants;
 import junit.framework.TestCase;
 
-import com.rallydev.webservice.v1_10.domain.Release;
-import com.rallydev.webservice.v1_10.domain.Workspace;
+import com.rallydev.webservice.v1_14.domain.Release;
+import com.rallydev.webservice.v1_14.domain.Workspace;
 
 /**
  *

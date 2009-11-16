@@ -30,7 +30,7 @@ package com.funambol.lanciadelta;
 
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
 import bsh.Interpreter;
-import com.rallydev.webservice.v1_10.service.RallyService;
+import com.rallydev.webservice.v1_14.service.RallyService;
 import junit.framework.TestCase;
 
 /**

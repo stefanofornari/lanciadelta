@@ -30,17 +30,17 @@ package com.funambol.lanciadelta.rally;
 
 import com.funambol.lanciadelta.Constants;
 import com.funambol.lanciadelta.LanciaDeltaBeanMap;
-import com.rallydev.webservice.v1_10.domain.Artifact;
-import com.rallydev.webservice.v1_10.domain.DomainObject;
-import com.rallydev.webservice.v1_10.domain.HierarchicalRequirement;
-import com.rallydev.webservice.v1_10.domain.Iteration;
-import com.rallydev.webservice.v1_10.domain.Project;
-import com.rallydev.webservice.v1_10.domain.QueryResult;
-import com.rallydev.webservice.v1_10.domain.Release;
-import com.rallydev.webservice.v1_10.domain.Workspace;
-import com.rallydev.webservice.v1_10.service.RallyService;
-import com.rallydev.webservice.v1_10.service.RallyServiceServiceLocator;
-import com.rallydev.webservice.v1_10.service.RallyServiceSoapBindingStub;
+import com.rallydev.webservice.v1_14.domain.Artifact;
+import com.rallydev.webservice.v1_14.domain.DomainObject;
+import com.rallydev.webservice.v1_14.domain.HierarchicalRequirement;
+import com.rallydev.webservice.v1_14.domain.Iteration;
+import com.rallydev.webservice.v1_14.domain.Project;
+import com.rallydev.webservice.v1_14.domain.QueryResult;
+import com.rallydev.webservice.v1_14.domain.Release;
+import com.rallydev.webservice.v1_14.domain.Workspace;
+import com.rallydev.webservice.v1_14.service.RallyService;
+import com.rallydev.webservice.v1_14.service.RallyServiceServiceLocator;
+import com.rallydev.webservice.v1_14.service.RallyServiceSoapBindingStub;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -399,7 +399,7 @@ implements RallyService, Constants {
     private static class LanciaDeltaServiceLocator extends RallyServiceServiceLocator {
 
         @Override
-        public com.rallydev.webservice.v1_10.service.RallyService getRallyService(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+        public com.rallydev.webservice.v1_14.service.RallyService getRallyService(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
             try {
                 LanciaDeltaService _stub =
                     new LanciaDeltaService(portAddress, LanciaDeltaServiceLocator.this);
