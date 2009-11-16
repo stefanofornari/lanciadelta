@@ -1,4 +1,14 @@
 ---------------
+LanciaDelta 1.2
+---------------
+2009-11-16
+ste:
+  - releasing v. 1.2
+ste:
+  - made the API version a constant
+  - upgraded to API version 1.14
+
+---------------
 LanciaDelta 1.1
 ---------------
 2009-04-21
