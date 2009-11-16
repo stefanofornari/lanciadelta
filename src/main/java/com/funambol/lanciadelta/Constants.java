@@ -40,8 +40,9 @@ public interface Constants {
     public final String PROPERTY_GROUPID = "groupId";
     public final String PROPERTY_VERSION = "version";
 
+    public final String RALLY_API_VERSION = "1.14";
     public final String RALLY_HOST_COMMUNITY = "community.rallydev.com";
-    public final String RALLY_URL = "/slm/webservice/1.10";
+    public final String RALLY_URL = "/slm/webservice/" + RALLY_API_VERSION;
     public final String RALLY_HOST_ENTERPRISE = "rally1.rallydev.com";
     public final String RALLY_SERVICE_URL  = "/RallyService";
     public final String WORKSPACE = "workspace";
@@ -50,7 +51,7 @@ public interface Constants {
     public final String ITERATION = "iteration";
     public final String RELEASE = "release";
 
-    public final String RALLY_INTEGRATION_VERSION = "Rally Java REST API 1.10";
+    public final String RALLY_INTEGRATION_VERSION = "Rally Java REST API " + RALLY_API_VERSION;
     public final String RALLY_SERVICE_OBJECT = "rally";
     public final String RALLY_WORKSPACE_OBJECT = "workspace";
 
