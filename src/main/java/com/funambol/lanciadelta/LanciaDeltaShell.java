@@ -30,9 +30,8 @@ package com.funambol.lanciadelta;
 
 import bsh.Interpreter;
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Properties;
+import java.net.URL;
 import org.apache.commons.lang.StringUtils;
 
 
@@ -50,15 +49,12 @@ implements Constants {
 
     private LanciaDeltaService service;
 
+    private boolean interactive;
+
     // ------------------------------------------------------------ Constructors
 
     public LanciaDeltaShell() throws Exception {
         checkProperties();
-
-        String rallyUrl = "https://"
-                        + System.getProperty(PROPERTY_HOST)
-                        + RALLY_URL
-                        ;
 
         service = LanciaDeltaService.getInstance();
 
@@ -76,8 +72,13 @@ implements Constants {
     }
     
     // ---------------------------------------------------------- Public methods
+
     public Interpreter getInterpreter() {
         return interpreter;
+    }
+
+    public boolean isInteractive() {
+        return interactive;
     }
 
     // -------------------------------------------------------------------- main
@@ -85,12 +86,6 @@ implements Constants {
     public static void main(String[] args) throws Exception {
         LanciaDeltaShell shell = null;
 
-        //
-        // We read the project artifactid, groupid and version and set them
-        // in the System.properties for further use
-        //
-        //readProjectProperties();
-        
         try {
             shell = new LanciaDeltaShell();
         } catch (Exception e) {
@@ -98,16 +93,7 @@ implements Constants {
             System.exit(1);
         }
 
-        while (true) {
-            try {
-                shell.getInterpreter().run();
-            } catch (Exception e) {
-                System.err.println("ERR: " + e.getMessage());
-                System.err.println(">>>");
-                e.printStackTrace();
-                System.err.println("<<<");
-            }
-        }
+        shell.execute();
  
      }
 
@@ -118,7 +104,7 @@ implements Constants {
      * 
      * @throws java.lang.RuntimeException
      */
-    private void checkProperties() throws RuntimeException {
+    private void checkProperties() throws RuntimeException, Exception {
         String value = System.getProperty(PROPERTY_USERNAME);
 
         if (StringUtils.isEmpty(value)) {
@@ -134,6 +120,15 @@ implements Constants {
         if (StringUtils.isEmpty(value)) {
             System.setProperty(PROPERTY_HOST, RALLY_HOST_COMMUNITY);
         }
+
+        value = System.getProperty(PROPERTY_SCRIPT);
+
+        if (StringUtils.isEmpty(value)) {
+            interactive = true;
+        } else {
+            new URL(value); // just to check it is a valid URL
+            interactive = false;
+        }
     }
 
     private String getMissingPropertyMessage(String p) {
@@ -141,24 +136,36 @@ implements Constants {
     }
 
     /**
-     * Reads maven project properties from META-INF/com.funambol/lanciadelta/pom.properties
-     * and set artifactid, groupid and version as system properties.
+     * Executes the script read from the standard input stream or given URL
+     *
      */
-    private static void readProjectProperties() {
-        InputStream is =
-            LanciaDeltaShell.class.getResourceAsStream("META-INF/com.funambol/lanciadelta/pom.properties");
-
-        if (is != null) {
-            Properties projectProperties = new Properties();
+    private void execute() throws Exception {
+        if (isInteractive()) {
+            while (true) {
+                try {
+                    getInterpreter().run();
+                } catch (Exception e) {
+                    System.err.println("ERR: " + e.getMessage());
+                    System.err.println(">>>");
+                    e.printStackTrace();
+                    System.err.println("<<<");
+                }
+            }
+        } else {
+            URL url = new URL(System.getProperty(PROPERTY_SCRIPT));
 
             try {
-                projectProperties.load(is);
+                System.out.println(url.toString());
+                System.out.println(url.getContent());
+                getInterpreter().eval(
+                    new InputStreamReader(url.openStream())
+                );
             } catch (Exception e) {
-                System.err.println("Error reading properties file: " + e);
+                System.err.println("ERR: " + e.getMessage());
+                System.err.println(">>>");
+                e.printStackTrace();
+                System.err.println("<<<");
             }
-
-            System.getProperties().putAll(projectProperties);
         }
     }
-
 }
