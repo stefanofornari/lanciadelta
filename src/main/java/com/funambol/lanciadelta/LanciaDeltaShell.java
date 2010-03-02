@@ -155,8 +155,6 @@ implements Constants {
             URL url = new URL(System.getProperty(PROPERTY_SCRIPT));
 
             try {
-                System.out.println(url.toString());
-                System.out.println(url.getContent());
                 getInterpreter().eval(
                     new InputStreamReader(url.openStream())
                 );
