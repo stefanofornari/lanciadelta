@@ -49,4 +49,4 @@ cd "$CMD_HOME"
 LANG=en_US.UTF-8
 
 echo "Using $JAVA_CMD"
-$JAVA_CMD $* com.funambol.lanciadelta.LanciaDeltaShell
+$JAVA_CMD "$@" com.funambol.lanciadelta.LanciaDeltaShell
