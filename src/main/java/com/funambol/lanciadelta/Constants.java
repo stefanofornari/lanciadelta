@@ -33,12 +33,13 @@ package com.funambol.lanciadelta;
  * @author ste
  */
 public interface Constants {
-    public final String PROPERTY_USERNAME = "rally.user";
+    public final String PROPERTY_USERNAME   = "rally.user"    ;
     public final String PROPERTY_PASSWORD = "rally.password";
-    public final String PROPERTY_HOST = "rally.host";
-    public final String PROPERTY_ARTIFACTID = "artifactId";
-    public final String PROPERTY_GROUPID = "groupId";
-    public final String PROPERTY_VERSION = "version";
+    public final String PROPERTY_HOST       = "rally.host"    ;
+    public final String PROPERTY_ARTIFACTID = "artifactId"    ;
+    public final String PROPERTY_GROUPID    = "groupId"       ;
+    public final String PROPERTY_VERSION    = "version"       ;
+    public final String PROPERTY_SCRIPT     = "script"        ;
 
     public final String RALLY_API_VERSION = "1.14";
     public final String RALLY_HOST_COMMUNITY = "community.rallydev.com";
