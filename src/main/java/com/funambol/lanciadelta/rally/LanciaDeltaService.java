@@ -30,7 +30,6 @@ package com.funambol.lanciadelta.rally;
 
 import com.funambol.lanciadelta.Constants;
 import com.funambol.lanciadelta.LanciaDeltaBeanMap;
-import com.rallydev.webservice.v1_14.domain.Artifact;
 import com.rallydev.webservice.v1_14.domain.DomainObject;
 import com.rallydev.webservice.v1_14.domain.HierarchicalRequirement;
 import com.rallydev.webservice.v1_14.domain.Iteration;
