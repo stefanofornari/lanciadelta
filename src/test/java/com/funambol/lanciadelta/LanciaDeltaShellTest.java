@@ -30,7 +30,9 @@ package com.funambol.lanciadelta;
 
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
 import bsh.Interpreter;
-import com.rallydev.webservice.v1_14.service.RallyService;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Properties;
 import junit.framework.TestCase;
 
 /**
@@ -49,7 +51,7 @@ implements Constants {
         
     }
 
-    public void _testRequiredProperties() throws Exception {
+    public void testRequiredProperties() throws Exception {
         try {
             new LanciaDeltaShell();
             fail();
@@ -83,6 +85,27 @@ implements Constants {
         assertEquals(System.getProperty(PROPERTY_HOST), RALLY_HOST_ENTERPRISE);
     }
 
+    public void testScriptFileOK() throws Exception {
+        _testProperty(PROPERTY_SCRIPT, "file://./dummy.bsh");
+    }
+
+    public void testScriptHTTPOK() throws Exception {
+        _testProperty(PROPERTY_SCRIPT, "http://somewhere.com/test.bsh");
+    }
+
+    public void testScriptHTTPSOK() throws Exception {
+        _testProperty(PROPERTY_SCRIPT, "https://somewhere.com/test.bsh");
+    }
+
+    public void testScriptURLKO() throws Exception {
+        try {
+            _testProperty(PROPERTY_SCRIPT, "unknown://somewhere.com/test.bsh");
+            fail();
+        } catch (Exception e) {
+            // OK!
+        }
+    }
+
     public void _testParserInitialization() throws Exception {
         LanciaDeltaShell shell = new LanciaDeltaShell();
 
@@ -101,4 +124,45 @@ implements Constants {
         assertNotNull(service);
     }
 
+    public void testIsInteractive() throws Exception {
+        LanciaDeltaShell shell = new LanciaDeltaShell();
+
+        assertTrue(shell.isInteractive());
+    }
+
+    public void testIsNotInteractive() throws Exception {
+        System.setProperty(PROPERTY_SCRIPT, "file://./dummy.bsh");
+        LanciaDeltaShell shell = new LanciaDeltaShell();
+
+        assertFalse(shell.isInteractive());
+    }
+
+    public void testExecuteCommandLineScript() throws Exception {
+        File f = new File("target/test-classes/dummy.bsh");
+
+        System.setProperty(PROPERTY_SCRIPT, f.toURI().toString());
+
+        LanciaDeltaShell shell = new LanciaDeltaShell();
+
+        Method m = LanciaDeltaShell.class.getDeclaredMethod("execute");
+        m.setAccessible(true);
+        m.invoke(shell);
+
+        Interpreter interpreter = shell.getInterpreter();
+
+        assertTrue((Boolean)interpreter.get("executed"));
+    }
+
+    // --------------------------------------------------------- Private methods
+    
+    private void _testProperty(final String key, final String value) throws Exception {
+        System.setProperty(key, value);
+
+        try {
+            new LanciaDeltaShell();
+        } finally {
+            System.getProperties().remove(key);
+        }
+
+    }
 }
