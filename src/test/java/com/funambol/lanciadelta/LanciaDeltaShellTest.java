@@ -96,24 +96,11 @@ implements Constants {
     }
 
     public void testScriptFileOK() throws Exception {
-        _testProperty(PROPERTY_SCRIPT, "file://./dummy.bsh");
+        _testProperty(PROPERTY_SCRIPT, "target/test-classes/dummy.bsh");
     }
 
-    public void testScriptHTTPOK() throws Exception {
-        _testProperty(PROPERTY_SCRIPT, "http://somewhere.com/test.bsh");
-    }
-
-    public void testScriptHTTPSOK() throws Exception {
-        _testProperty(PROPERTY_SCRIPT, "https://somewhere.com/test.bsh");
-    }
-
-    public void testScriptURLKO() throws Exception {
-        try {
-            _testProperty(PROPERTY_SCRIPT, "unknown://somewhere.com/test.bsh");
-            fail();
-        } catch (Exception e) {
-            // OK!
-        }
+    public void testScriptFileKO() throws Exception {
+        _testProperty(PROPERTY_SCRIPT, "nonexistingfile.bsh");
     }
 
     public void _testParserInitialization() throws Exception {
@@ -141,16 +128,14 @@ implements Constants {
     }
 
     public void testIsNotInteractive() throws Exception {
-        System.setProperty(PROPERTY_SCRIPT, "file://./dummy.bsh");
+        System.setProperty(PROPERTY_SCRIPT, "dummy.bsh");
         LanciaDeltaShell shell = new LanciaDeltaShell();
 
         assertFalse(shell.isInteractive());
     }
 
     public void testExecuteCommandLineScript() throws Exception {
-        File f = new File("target/test-classes/dummy.bsh");
-
-        System.setProperty(PROPERTY_SCRIPT, f.toURI().toString());
+        System.setProperty(PROPERTY_SCRIPT, "target/test-classes/dummy.bsh");
 
         LanciaDeltaShell shell = new LanciaDeltaShell();
 

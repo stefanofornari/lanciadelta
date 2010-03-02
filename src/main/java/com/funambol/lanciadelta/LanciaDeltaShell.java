@@ -30,6 +30,9 @@ package com.funambol.lanciadelta;
 
 import bsh.Interpreter;
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import org.apache.commons.lang.StringUtils;
@@ -122,13 +125,7 @@ implements Constants {
         }
 
         value = System.getProperty(PROPERTY_SCRIPT);
-
-        if (StringUtils.isEmpty(value)) {
-            interactive = true;
-        } else {
-            new URL(value); // just to check it is a valid URL
-            interactive = false;
-        }
+        interactive = StringUtils.isEmpty(value);
     }
 
     private String getMissingPropertyMessage(String p) {
@@ -152,11 +149,17 @@ implements Constants {
                 }
             }
         } else {
-            URL url = new URL(System.getProperty(PROPERTY_SCRIPT));
+            File f = new File(System.getProperty(PROPERTY_SCRIPT));
+
+            if (!f.exists()) {
+                throw new FileNotFoundException("Script file not found: " + f.getAbsolutePath());
+            }
 
             try {
                 getInterpreter().eval(
-                    new InputStreamReader(url.openStream())
+                    new InputStreamReader(
+                        new FileInputStream(f)
+                    )
                 );
             } catch (Exception e) {
                 System.err.println("ERR: " + e.getMessage());
