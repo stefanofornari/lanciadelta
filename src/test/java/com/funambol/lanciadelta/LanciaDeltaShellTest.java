@@ -52,6 +52,16 @@ implements Constants {
     }
 
     public void testRequiredProperties() throws Exception {
+        //
+        // When tests are executed, the below properties must be set so that all
+        // other tests can be executed. Therefore, we need to explicitely remove
+        // such properties before executing the test code below.
+        //
+        Properties p = System.getProperties();
+        p.remove(PROPERTY_USERNAME);
+        p.remove(PROPERTY_PASSWORD);
+        p.remove(PROPERTY_HOST);
+
         try {
             new LanciaDeltaShell();
             fail();
