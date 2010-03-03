@@ -18,8 +18,8 @@ while [ -h "$PRG" ]; do
   fi
 done
 
+CURDIR=`pwd`
 PRGDIR=`dirname "$PRG"`
-
 CMD_HOME=`cd "$PRGDIR/.." ; pwd`
 
 #
@@ -41,9 +41,10 @@ fi
 
 # Setting classpath
 cd "$CMD_HOME/lib"
-for jarfile in *.jar; do export CLASSPATH=$CLASSPATH:lib/$jarfile; done
+for jarfile in *.jar; do export CLASSPATH=$CLASSPATH:$CMD_HOME/lib/$jarfile; done
 export CLASSPATH=ext:$CLASSPATH
-cd "$CMD_HOME"
+
+cd "$CURDIR"
 
 
 LANG=en_US.UTF-8
