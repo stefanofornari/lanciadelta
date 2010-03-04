@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.rpc.Service;
+import org.apache.axis.AxisFault;
 import org.apache.axis.client.Stub;
 
 /**
@@ -59,7 +60,7 @@ implements RallyService, Constants {
     private static LanciaDeltaService instance = null;
 
     private LanciaDeltaService(URL endpointURL, Service service)
-    throws org.apache.axis.AxisFault {
+    throws AxisFault {
          super(endpointURL, service);
     }
 
@@ -84,12 +85,10 @@ implements RallyService, Constants {
         ArrayList<Iteration> iterations = new ArrayList();
 
         QueryResult rs = null;
-        boolean cont = true;
         long i = 1, tot = 0;
         do {
             try {
                 rs = query(ITERATION, "(Name = " + name + ")", "", false, i, PAGE);
-            
                 DomainObject[] results = rs.getResults();
                 tot = rs.getTotalResultCount();
 
@@ -100,8 +99,10 @@ implements RallyService, Constants {
                     iterations.add(iteration);
                     ++i;
                 }
+            } catch (AxisFault f) {
+                handleAxisFault(f);
             } catch (Exception e) {
-                throw new LanciaDeltaException("Error retrieving the iterations with name" + name, e);
+                throw new LanciaDeltaException("Error retrieving the iterations with name " + name, e);
             }
         } while (i<=tot);
 
@@ -158,6 +159,8 @@ implements RallyService, Constants {
             }
 
             return stories;
+        } catch (AxisFault f) {
+            throw handleAxisFault(f);
         } catch (Exception e) {
             throw new LanciaDeltaException("Error retrieving the stories for the release " + releaseName, e);
         }
@@ -188,7 +191,7 @@ implements RallyService, Constants {
                 release = (Release)results[0];
             }
         } catch (Exception e) {
-            throw new LanciaDeltaException("Error getting the iterations with name" + name, e);
+            throw new LanciaDeltaException("Error getting the iterations with name " + name, e);
         }
 
         return release;
@@ -283,6 +286,8 @@ implements RallyService, Constants {
 
                 return story;
             }
+        } catch (AxisFault f) {
+            throw handleAxisFault(f);
         } catch (Exception e) {
             throw new LanciaDeltaException(e);
         }
@@ -310,22 +315,28 @@ implements RallyService, Constants {
         boolean fetch,
         long start,
         long pageSize
-    ) throws RemoteException {
-        return query(
-                   (Workspace)null,
-                   artifactType,
-                   query,
-                   order,
-                   fetch,
-                   start,
-                   pageSize
-         );
+    ) throws LanciaDeltaException {
+        try {
+            return query(
+                         (Workspace)null,
+                         artifactType,
+                         query,
+                         order,
+                         fetch,
+                         start,
+                         pageSize
+            );
+        } catch (AxisFault f) {
+            throw handleAxisFault(f);
+        } catch (RemoteException e) {
+            throw new LanciaDeltaException(e);
+        }
     }
 
     // --------------------------------------------------------- Private methods
 
     private List<HierarchicalRequirement> getStories(String q) 
-    throws RemoteException {
+    throws LanciaDeltaException {
         final int PAGE = 50;
         ArrayList<HierarchicalRequirement> stories = new ArrayList<HierarchicalRequirement>();
 
@@ -345,8 +356,24 @@ implements RallyService, Constants {
         return stories;
     }
 
-    // --------------------------------------------------------------- Singleton
+    /**
+     * Handles an AxisFault exception turning it into an appropriate
+     * LanciaDeltaException.
+     *
+     * @param f the Axis fault
+     * @return the corresponding LanciaDeltaException
+     */
+    private LanciaDeltaException handleAxisFault(AxisFault f) {
+        String reason = f.getFaultReason();
 
+        if ((reason != null) && (reason.startsWith("(401"))) {
+            return new LanciaDeltaException("Authorization failed. Please check Rally username, password and host (" + reason + ")", f);
+        }
+
+        return new LanciaDeltaException("Communication error with the Rally server (i.e. web service fault).", f);
+    }
+
+    // --------------------------------------------------------------- Singleton
 
     /**
      *
@@ -404,8 +431,7 @@ implements RallyService, Constants {
                     new LanciaDeltaService(portAddress, LanciaDeltaServiceLocator.this);
                 _stub.setPortName(getRallyServiceWSDDServiceName());
                 return _stub;
-            }
-            catch (org.apache.axis.AxisFault e) {
+            } catch (AxisFault f) {
                 return null;
             }
         }
