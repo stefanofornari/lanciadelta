@@ -89,12 +89,6 @@ implements Constants {
 
         try {
             shell = new LanciaDeltaShell();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-
-        try {
             shell.execute();
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -103,7 +97,6 @@ implements Constants {
             }
             System.exit(1);
         }
- 
      }
 
     // --------------------------------------------------------- Private methods
