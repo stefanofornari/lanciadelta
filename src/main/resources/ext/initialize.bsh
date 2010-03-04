@@ -1,3 +1,8 @@
 initialize() {
     bsh.prompt = "rally> ";
+
+    //
+    // let's get something from rally so that we check credentials as side effect
+    //
+    print(rally.currentUser);
 }
