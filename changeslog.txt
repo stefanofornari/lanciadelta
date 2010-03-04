@@ -1,3 +1,7 @@
+2010-03-04
+ste:
+  - added command line parameter debug
+
 2010-03-03
 ste:
   - first implementation of US22: Passing a script to execute on command line
