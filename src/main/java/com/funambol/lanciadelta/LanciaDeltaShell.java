@@ -68,8 +68,6 @@ implements Constants {
             true
         );
         interpreter.set(RALLY_SERVICE_OBJECT, service);
-        interpreter.setShowResults(true);
-
         interpreter.eval("importCommands(\"/ext\");");
         interpreter.eval("initialize();");
     }
@@ -96,7 +94,15 @@ implements Constants {
             System.exit(1);
         }
 
-        shell.execute();
+        try {
+            shell.execute();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            if (System.getProperty(PROPERTY_DEBUG) != null) {
+                e.printStackTrace();
+            }
+            System.exit(1);
+        }
  
      }
 
@@ -135,12 +141,16 @@ implements Constants {
     /**
      * Executes the script read from the standard input stream or given URL
      *
+     * @throws Exceptino in case of errors
+     *
      */
     private void execute() throws Exception {
         if (isInteractive()) {
             while (true) {
                 try {
-                    getInterpreter().run();
+                    Interpreter beanshell = getInterpreter();
+                    beanshell.setShowResults(true);
+                    beanshell.run();
                 } catch (Exception e) {
                     System.err.println("ERR: " + e.getMessage());
                     System.err.println(">>>");
@@ -156,7 +166,11 @@ implements Constants {
             }
 
             try {
-                getInterpreter().eval(
+                Interpreter beanshell = getInterpreter();
+
+                beanshell.setExitOnEOF(true);
+                beanshell.setShowResults(false);
+                beanshell.eval(
                     new InputStreamReader(
                         new FileInputStream(f)
                     )

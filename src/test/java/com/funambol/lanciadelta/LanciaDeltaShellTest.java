@@ -30,7 +30,8 @@ package com.funambol.lanciadelta;
 
 import com.funambol.lanciadelta.rally.LanciaDeltaService;
 import bsh.Interpreter;
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Properties;
 import junit.framework.TestCase;
@@ -146,6 +147,23 @@ implements Constants {
         Interpreter interpreter = shell.getInterpreter();
 
         assertTrue((Boolean)interpreter.get("executed"));
+    }
+
+    public void testNotExistingCommandLineScript() throws Exception {
+        System.setProperty(PROPERTY_SCRIPT, "target/test-classes/notexisting.bsh");
+
+        LanciaDeltaShell shell = new LanciaDeltaShell();
+
+        boolean fileNotFoundException = false;
+        try {
+            Method m = LanciaDeltaShell.class.getDeclaredMethod("execute");
+            m.setAccessible(true);
+            m.invoke(shell);
+        } catch (InvocationTargetException e) {
+            fileNotFoundException = (e.getTargetException() instanceof FileNotFoundException);
+        }
+
+        assertTrue(fileNotFoundException);
     }
 
     // --------------------------------------------------------- Private methods
